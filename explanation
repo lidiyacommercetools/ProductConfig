@@ -4,7 +4,7 @@ assignment(X,Y):- output(X,Q), literal_tuple(Q,Y).
 % Explanation for membership
 depends(X,Y,P):- why(X),answer(X), answer(Y), assignment(X,N), atom_tuple(V,N), 1{rule(disjunction(V),normal(P)); rule(choice(V),normal(P)); rule(choice(V),sum(P)); rule(disjunction(V),sum(P)) }1, literal_tuple(P,Q), assignment(Y,Q).
 depends_neg(X,Y,C):- why(X),answer(X), not answer(Y), literal_tuple(A,-B), rule(disjunction(C),normal(A)), atom_tuple(C,D), assignment(X,D), assignment(Y,B).
-choice_rule(X,A):- why(X),rule(choice(A),normal(B)), atom_tuple(A,V), assignment(X,V), answer(X).
+choice_rule(X,A):- why(X), not depends(X,_,_), not depends_neg(X,_,_), rule(choice(A),normal(B)), atom_tuple(A,V), assignment(X,V), answer(X).
 fact(X):- why(X), output(X,0).
 
 
@@ -14,17 +14,27 @@ fact(X):- why(X), output(X,0).
 not_mentioned(X):- why(X), not output(X,_).
 
 %Part of a choice rule and not chosen
-not_chosen(X,A):- why(X), not answer(X), assignment(X,C), atom_tuple(A,C),  rule(choice(A),_).
+not_chosen(X,A):- why(X), not constraint_issue(X,_), not answer(X), assignment(X,C), atom_tuple(A,C),  rule(choice(A),_).
 
 
 %Body of the rule was not satisfied
 head_lit(X,A):- rule(disjunction(A),_), atom_tuple(A,C), assignment(X,C).
 problem(Y,A):- rule(disjunction(A),normal(B)), literal_tuple(B,D), assignment(Y,D), not answer(Y).
 problem_neg(Y,A):- rule(disjunction(A),normal(B)), literal_tuple(B,-D), assignment(Y,D), answer(Y).
-not_satisfied(X,Y,A):- head_lit(X,A), {problem(Y,A); problem_neg(Y,A)}=1, not answer(X), why(X), output(Y,_).
+not_satisfied(X,Y,A):- head_lit(X,A), not constraint_issue(X,_),{problem(Y,A); problem_neg(Y,A)}=1, not answer(X), why(X), output(Y,_).
 
 
 %Constraint
 constraint_sat(X,A):- rule(_,normal(A)), literal_tuple(A,B), assignment(X,B), answer(X).
 constraint_sat(X,A):- rule(_,normal(A)), literal_tuple(A,-B), assignment(X,B), not answer(X).
 constraint_issue(X,B):- why(X), not answer(X), rule(disjunction(A),normal(B)), not constraint_sat(X,B). 
+
+
+#show depends/3.
+#show fact/1.
+#show depends_neg/3.
+#show choice_rule/2.
+#show not_mentioned/1.
+#show not_chosen/2.
+#show not_satisfied/3.
+#show constraint_issue/2.
