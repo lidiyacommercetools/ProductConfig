@@ -1,20 +1,40 @@
+%Numerical representation of an atom 
 assignment(X,Y):- output(X,Q), literal_tuple(Q,Y).
 
 
+%Numertical representation of the atom to be explained
+why_assignment(X,D):- why(X),answer(X),assignment(X,D).
+
+
 % Explanation for membership
-depends(X,Y,P):- why(X),answer(X), answer(Y), assignment(X,N), atom_tuple(V,N), 1{rule(disjunction(V),normal(P)); rule(choice(V),normal(P)); rule(choice(V),sum(P)); rule(disjunction(V),sum(P)) }1, literal_tuple(P,Q), assignment(Y,Q).
-depends_neg(X,Y,C):- why(X),answer(X), not answer(Y), literal_tuple(A,-B), rule(disjunction(C),normal(A)), atom_tuple(C,D), assignment(X,D), assignment(Y,B).
-choice_rule(X,A):- why(X), not depends(X,_,_), not depends_neg(X,_,_), rule(choice(A),normal(B)), atom_tuple(A,V), assignment(X,V), answer(X).
+
+% Atom is a fact
 fact(X):- why(X), output(X,0).
 
 
-% Explanation fot lack of membership
+% Atom X depends on atom Y in rule P
+depends(X,Y,P):- why_assignment(X,N), answer(Y), assignment(Y,Q), atom_tuple(V,N), 
+1{rule(disjunction(V),normal(P)); rule(choice(V),normal(P)); rule(choice(V),sum(P)); rule(disjunction(V),sum(P)) }1, 
+literal_tuple(P,Q).
 
-%atom does not occur in any rule head
+
+% Atom X depends on the negetation of atom Y in rule C
+depends_neg(X,Y,C):- why_assignment(X,D), not answer(Y), assignment(Y,B), literal_tuple(A,-B), 
+rule(disjunction(C),normal(A)), atom_tuple(C,D).
+
+
+% Atom X was chosen in choice rule A
+choice_rule(X,A):-  why_assignment(X,V), not depends(X,_,_), not depends_neg(X,_,_), rule(choice(A),normal(B)), atom_tuple(A,V).
+
+
+
+% Explanation for lack of membership
+
+% Atom does not occur in a rule head
 not_mentioned(X):- why(X), not output(X,_).
 
 %Part of a choice rule and not chosen
-not_chosen(X,A):- why(X), not constraint_issue(X,_), not answer(X), assignment(X,C), atom_tuple(A,C),  rule(choice(A),_).
+not_chosen(X,A):- why(X), not constraint_issue(X,_), 1{not answer(X);empty_set}, assignment(X,C), atom_tuple(A,C),  rule(choice(A),_).
 
 
 %Body of the rule was not satisfied
@@ -27,7 +47,7 @@ not_satisfied(X,Y,A):- head_lit(X,A), not constraint_issue(X,_),{problem(Y,A); p
 %Constraint
 constraint_sat(X,A):- rule(_,normal(A)), literal_tuple(A,B), assignment(X,B), answer(X).
 constraint_sat(X,A):- rule(_,normal(A)), literal_tuple(A,-B), assignment(X,B), not answer(X).
-constraint_issue(X,B):- why(X), not answer(X), rule(disjunction(A),normal(B)), not constraint_sat(X,B). 
+constraint_issue(X,B):- why(X), {not answer(X);empty_set}=1, rule(disjunction(A),normal(B)), not constraint_sat(X,B). 
 
 
 #show depends/3.
@@ -37,4 +57,4 @@ constraint_issue(X,B):- why(X), not answer(X), rule(disjunction(A),normal(B)), n
 #show not_mentioned/1.
 #show not_chosen/2.
 #show not_satisfied/3.
-#show constraint_issue/2.
+
