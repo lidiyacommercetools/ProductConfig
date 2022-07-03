@@ -14,7 +14,7 @@ subgrid(X,Y,2,1) :- x(X), x(A), y(Y), y(B), 2<X, Y<3.
 
 :- sudoku(X,Y,N), sudoku(A,Y,N), X!=A.
 :- sudoku(X,Y,N), sudoku(X,B,N), Y!=B.
-:- sudoku(X,Y,V), sudoku(A,B,V), subgrid(X,Y,C,D),subgrid(A,B,C,D), {X != A ;Y != B}=2.
+:- sudoku(X,Y,V), sudoku(A,B,V), subgrid(X,Y,C,D),subgrid(A,B,C,D), {X = A ;Y = B}=2.
 
 
 % Values provided from the start
