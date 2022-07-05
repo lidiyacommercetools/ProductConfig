@@ -33,10 +33,10 @@ original_fact(X):- why(X), answer(X), fact(X).
 % Explanation for lack of membership
 
 % Atom does not occur in a rule head
-not_mentioned(X):- why(X), not output(X,_), not original_fact(X).
+not_mentioned(X):- why_not(X), not output(X,_), not original_fact(X).
 
 %Part of a choice rule and not chosen
-not_chosen(X,A):- why(X), 1{not answer(X);empty_set}, assignment(X,C), atom_tuple(A,C),  any_choice_rule(A,_), not constraint_issue'(X,_).
+not_chosen(X,A):- why_not(X), 1{not answer(X);empty_set}, assignment(X,C), atom_tuple(A,C),  any_choice_rule(A,_), not constraint_issue'(X,_).
 
 
 %Body of the rule was not satisfied
@@ -45,7 +45,7 @@ head_lit(X,A):- any_disjunction_rule(A,_), atom_tuple(A,C), assignment(X,C).
 problem(Y,A):- any_disjunction_rule(A,B), literal_tuple(B,D), assignment(Y,D), not answer(Y).
 
 problem_neg(Y,A):- any_disjunction_rule(A,B), literal_tuple(B,-D), assignment(Y,D), answer(Y).
-not_satisfied(X,Y,A):- head_lit(X,A), {problem(Y,A); problem_neg(Y,A)}=1, not answer(X), why(X), output(Y,_).
+not_satisfied(X,Y,A):- head_lit(X,A), {problem(Y,A); problem_neg(Y,A)}=1, not answer(X), why_not(X), output(Y,_).
 
 
 %Constraint
@@ -63,9 +63,9 @@ constraint_sat(X,A):- constraint(A),rule(_,sum(A)), literal_tuple(A,B), assignme
 constraint_issue(P):- not constraint_sat(X,P), assignment(X,B), literal_tuple(P,B), any_rule(_,P), not original_fact(X).
 
 
-constraint_issue'(X,P):- constraint_issue(P), any_rule(_,P), literal_tuple(P,Y), assignment(X,Y), why(X).
+constraint_issue'(X,P):- constraint_issue(P), any_rule(_,P), literal_tuple(P,Y), assignment(X,Y), why_not(X).
 
-reasons_for_constraint(X,P):- constraint_issue'(_,P), literal_tuple(P,S), assignment(X,S), not why(X).
+reasons_for_constraint(X,P):- constraint_issue'(_,P), literal_tuple(P,S), assignment(X,S), not why_not(X).
 reasons_for_constraint(X):- reasons_for_constraint(X,P).
 
 #show depends/3.
@@ -75,4 +75,6 @@ reasons_for_constraint(X):- reasons_for_constraint(X,P).
 #show not_mentioned/1.
 #show not_chosen/2.
 #show not_satisfied/3.
+%#show assignment/2.
+%#show constraint_issue/1.
 #show reasons_for_constraint/1.
