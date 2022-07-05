@@ -4,7 +4,8 @@ assignment(X,Y):- output(X,Q), literal_tuple(Q,Y).
 
 %Pick any rule type
 any_rule(V,P):- 1{rule(disjunction(V),normal(P)); rule(choice(V),normal(P)); rule(choice(V),sum(P)); rule(disjunction(V),sum(P)) }1, atom_tuple(V), literal_tuple(P).
-
+any_choice_rule(V,P):- 1{rule(choice(V),normal(P)); rule(choice(V),sum(P))}1, atom_tuple(V), literal_tuple(P).
+any_disjunction_rule(V,P):- 1{rule(disjunction(V),normal(P)); rule(disjunction(V),sum(P)) }1, atom_tuple(V), literal_tuple(P).
 
 %Numertical representation of the atom to be explained
 why_assignment(X,D):- why(X),answer(X),assignment(X,D).
@@ -12,41 +13,38 @@ why_assignment(X,D):- why(X),answer(X),assignment(X,D).
 
 % Explanation for membership
 
-% Atom is a fact
-fact(X):- why(X), output(X,0).
+
+% Atom X depends on atom Y in rule P (  X:- Y  )
+depends(X,Y,P):- why_assignment(X,N), answer(Y), assignment(Y,Q), literal_tuple(P,Q),  any_disjunction_rule(V,P), atom_tuple(V,N).
 
 
-% Atom X depends on atom Y in rule P
-depends(X,Y,P):- why_assignment(X,N), answer(Y), assignment(Y,Q), atom_tuple(V,N), any_rule(V,P), literal_tuple(P,Q).
-
-
-% Atom X depends on the negetation of atom Y in rule C
+% Atom X depends on the negetation of atom Y in rule C ( X :- not Y.  )
 depends_neg(X,Y,C):- why_assignment(X,D), not answer(Y), assignment(Y,B), literal_tuple(A,-B), 
-rule(disjunction(C),normal(A)), atom_tuple(C,D).
+any_disjunction_rule(C,A), atom_tuple(C,D).
 
 
 % Atom X was chosen in choice rule A
-%choice_rule(X,A):-  why_assignment(X,V), not depends(X,_,_), not depends_neg(X,_,_), rule(choice(A),normal(B)), atom_tuple(A,V).
-choice_rule(X,A):-  why_assignment(X,V), rule(choice(A),normal(B)), atom_tuple(A,V).
+choice_rule(X,A):-  why_assignment(X,V), any_choice_rule(A,_), atom_tuple(A,V), not original_fact(X).
 
-
+% Atom is a fact
+original_fact(X):- why(X), answer(X), fact(X).
 
 
 % Explanation for lack of membership
 
 % Atom does not occur in a rule head
-not_mentioned(X):- why(X), not output(X,_).
+not_mentioned(X):- why(X), not output(X,_), not original_fact(X).
 
 %Part of a choice rule and not chosen
-%not_chosen(X,A):- why(X), not constraint_issue(X,_), 1{not answer(X);empty_set}, assignment(X,C), atom_tuple(A,C),  rule(choice(A),_).
-not_chosen(X,A):- why(X), 1{not answer(X);empty_set}, assignment(X,C), atom_tuple(A,C),  rule(choice(A),_).
+not_chosen(X,A):- why(X), 1{not answer(X);empty_set}, assignment(X,C), atom_tuple(A,C),  any_choice_rule(A,_), not constraint_issue'(X,_).
 
 
 %Body of the rule was not satisfied
-head_lit(X,A):- rule(disjunction(A),_), atom_tuple(A,C), assignment(X,C).
-problem(Y,A):- rule(disjunction(A),normal(B)), literal_tuple(B,D), assignment(Y,D), not answer(Y).
-problem_neg(Y,A):- rule(disjunction(A),normal(B)), literal_tuple(B,-D), assignment(Y,D), answer(Y).
-%not_satisfied(X,Y,A):- head_lit(X,A), not constraint_issue(X,_),{problem(Y,A); problem_neg(Y,A)}=1, not answer(X), why(X), output(Y,_).
+head_lit(X,A):- any_disjunction_rule(A,_), atom_tuple(A,C), assignment(X,C).
+
+problem(Y,A):- any_disjunction_rule(A,B), literal_tuple(B,D), assignment(Y,D), not answer(Y).
+
+problem_neg(Y,A):- any_disjunction_rule(A,B), literal_tuple(B,-D), assignment(Y,D), answer(Y).
 not_satisfied(X,Y,A):- head_lit(X,A), {problem(Y,A); problem_neg(Y,A)}=1, not answer(X), why(X), output(Y,_).
 
 
@@ -61,22 +59,20 @@ constraint_sat(X,A):- constraint(A),rule(_,sum(A)), literal_tuple(A,B), assignme
 
 
 
-% Will only print none-facts due to grounding prior to reification
-constraint_issue(P):- not constraint_sat(X,P), assignment(X,B), literal_tuple(P,B), any_rule(_,P).
+% Will only print non-facts due to grounding prior to reification
+constraint_issue(P):- not constraint_sat(X,P), assignment(X,B), literal_tuple(P,B), any_rule(_,P), not original_fact(X).
 
 
 constraint_issue'(X,P):- constraint_issue(P), any_rule(_,P), literal_tuple(P,Y), assignment(X,Y), why(X).
 
 reasons_for_constraint(X,P):- constraint_issue'(_,P), literal_tuple(P,S), assignment(X,S), not why(X).
-
+reasons_for_constraint(X):- reasons_for_constraint(X,P).
 
 #show depends/3.
-#show fact/1.
+#show original_fact/1.
 #show depends_neg/3.
 #show choice_rule/2.
-%#show not_mentioned/1.
-%#show not_chosen/2.
-%#show not_satisfied/3.
-%#show assignment/2.
-%#show constraint_issue/1.
-#show reasons_for_constraint/2.
+#show not_mentioned/1.
+#show not_chosen/2.
+#show not_satisfied/3.
+#show reasons_for_constraint/1.
