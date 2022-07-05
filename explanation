@@ -15,12 +15,17 @@ why_assignment(X,D):- why(X),answer(X),assignment(X,D).
 
 
 % Atom X depends on atom Y in rule P (  X:- Y  )
-depends(X,Y,P):- why_assignment(X,N), answer(Y), assignment(Y,Q), literal_tuple(P,Q),  any_disjunction_rule(V,P), atom_tuple(V,N).
+
+rule_unsatisfied(P):- any_disjunction_rule(V,P), literal_tuple(P,W), assignment(X,W), not answer(X).
+rule_unsatisfied(P):- any_disjunction_rule(V,P), literal_tuple(P,-W), assignment(X,W), answer(X).
+
+depends(X,Y,P):- why_assignment(X,N), answer(Y), assignment(Y,Q), literal_tuple(P,Q),  any_disjunction_rule(V,P), atom_tuple(V,N), not rule_unsatisfied(P).
+
 
 
 % Atom X depends on the negetation of atom Y in rule C ( X :- not Y.  )
-depends_neg(X,Y,C):- why_assignment(X,D), not answer(Y), assignment(Y,B), literal_tuple(A,-B), 
-any_disjunction_rule(C,A), atom_tuple(C,D).
+depends_neg(X,Y,A):- why_assignment(X,D), not answer(Y), assignment(Y,B), literal_tuple(A,-B), 
+any_disjunction_rule(C,A), atom_tuple(C,D), not rule_unsatisfied(A).
 
 
 % Atom X was chosen in choice rule A
@@ -41,11 +46,7 @@ not_chosen(X,A):- why_not(X), 1{not answer(X);empty_set}, assignment(X,C), atom_
 
 %Body of the rule was not satisfied
 head_lit(X,A):- any_disjunction_rule(A,_), atom_tuple(A,C), assignment(X,C).
-
-problem(Y,A):- any_disjunction_rule(A,B), literal_tuple(B,D), assignment(Y,D), not answer(Y).
-
-problem_neg(Y,A):- any_disjunction_rule(A,B), literal_tuple(B,-D), assignment(Y,D), answer(Y).
-not_satisfied(X,Y,A):- head_lit(X,A), {problem(Y,A); problem_neg(Y,A)}=1, not answer(X), why_not(X), output(Y,_).
+not_satisfied(X,A):- head_lit(X,A), rule_unsatisfied(A), not answer(X), why_not(X).
 
 
 %Constraint
@@ -74,7 +75,7 @@ reasons_for_constraint(X):- reasons_for_constraint(X,P).
 #show choice_rule/2.
 #show not_mentioned/1.
 #show not_chosen/2.
-#show not_satisfied/3.
+#show not_satisfied/2.
 %#show assignment/2.
 %#show constraint_issue/1.
 #show reasons_for_constraint/1.
