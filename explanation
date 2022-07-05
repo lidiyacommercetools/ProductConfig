@@ -51,11 +51,7 @@ not_satisfied(X,Y,A):- head_lit(X,A), {problem(Y,A); problem_neg(Y,A)}=1, not an
 
 
 %Constraint
-constraint(P):- rule(disjunction(V),normal(P)), not atom_tuple(V,_) .
-constraint(P):- rule(disjunction(V),sum(P)), not atom_tuple(V,_).
-constraint(P):- rule(choice(V),sum(P)), not atom_tuple(V,_).
-constraint(P):- rule(choice(V),normal(P)), not atom_tuple(V,_).
-
+constraint(P):- any_rule(V,P), not atom_tuple(V,_).
 
 
 constraint_sat(X,A):- constraint(A), rule(_,normal(A)), literal_tuple(A,-B), assignment(X,B), answer(X).
