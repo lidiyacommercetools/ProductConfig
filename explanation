@@ -2,6 +2,9 @@
 %Numerical representation of an atom 
 assignment(X,Y):- output(X,Q), literal_tuple(Q,Y).
 
+%Pick any rule type
+any_rule(V,P):- 1{rule(disjunction(V),normal(P)); rule(choice(V),normal(P)); rule(choice(V),sum(P)); rule(disjunction(V),sum(P)) }1, atom_tuple(V), literal_tuple(P).
+
 
 %Numertical representation of the atom to be explained
 why_assignment(X,D):- why(X),answer(X),assignment(X,D).
@@ -14,9 +17,7 @@ fact(X):- why(X), output(X,0).
 
 
 % Atom X depends on atom Y in rule P
-depends(X,Y,P):- why_assignment(X,N), answer(Y), assignment(Y,Q), atom_tuple(V,N), 
-1{rule(disjunction(V),normal(P)); rule(choice(V),normal(P)); rule(choice(V),sum(P)); rule(disjunction(V),sum(P)) }1, 
-literal_tuple(P,Q).
+depends(X,Y,P):- why_assignment(X,N), answer(Y), assignment(Y,Q), atom_tuple(V,N), any_rule(V,P), literal_tuple(P,Q).
 
 
 % Atom X depends on the negetation of atom Y in rule C
@@ -24,9 +25,10 @@ depends_neg(X,Y,C):- why_assignment(X,D), not answer(Y), assignment(Y,B), litera
 rule(disjunction(C),normal(A)), atom_tuple(C,D).
 
 
-% Atom X was chosen in choice rule A%
+% Atom X was chosen in choice rule A
 %choice_rule(X,A):-  why_assignment(X,V), not depends(X,_,_), not depends_neg(X,_,_), rule(choice(A),normal(B)), atom_tuple(A,V).
 choice_rule(X,A):-  why_assignment(X,V), rule(choice(A),normal(B)), atom_tuple(A,V).
+
 
 
 
@@ -49,29 +51,36 @@ not_satisfied(X,Y,A):- head_lit(X,A), {problem(Y,A); problem_neg(Y,A)}=1, not an
 
 
 %Constraint
-constraint_sat(X,A):- rule(_,normal(A)), literal_tuple(A,-B), assignment(X,B), answer(X).
-constraint_sat(X,A):- rule(_,normal(A)), literal_tuple(A,B), assignment(X,B), not answer(X).
-constraint_sat(X,A):- rule(_,sum(A)), literal_tuple(A,-B), assignment(X,B), answer(X).
-constraint_sat(X,A):- rule(_,sum(A)), literal_tuple(A,B), assignment(X,B), not answer(X).
-
-constraint_issue(P):- not constraint_sat(X,P), assignment(X,B), literal_tuple(P,B), 
-1{rule(disjunction(V),normal(P)); rule(disjunction(V),sum(P)) ;rule(choice(V),normal(P)); rule(choice(V),sum(P))}1.
+constraint(P):- rule(disjunction(V),normal(P)), not atom_tuple(V,_) .
+constraint(P):- rule(disjunction(V),sum(P)), not atom_tuple(V,_).
+constraint(P):- rule(choice(V),sum(P)), not atom_tuple(V,_).
+constraint(P):- rule(choice(V),normal(P)), not atom_tuple(V,_).
 
 
-test(X,P):- constraint_issue(P), 1{rule(_,normal(P)); rule(_,sum(P))}1, literal_tuple(P,Y), assignment(X,Y).
 
-print(X,P):- test(_,P), literal_tuple(P,S), assignment(X,S), why(Y), assignment(Y,Y'), literal_tuple(P,Y').
+constraint_sat(X,A):- constraint(A), rule(_,normal(A)), literal_tuple(A,-B), assignment(X,B), answer(X).
+constraint_sat(X,A):- constraint(A),rule(_,normal(A)), literal_tuple(A,B), assignment(X,B), not answer(X).
+constraint_sat(X,A):- constraint(A),rule(_,sum(A)), literal_tuple(A,-B), assignment(X,B), answer(X).
+constraint_sat(X,A):- constraint(A),rule(_,sum(A)), literal_tuple(A,B), assignment(X,B), not answer(X).
 
+
+
+% Will only print none-facts due to grounding prior to reification
+constraint_issue(P):- not constraint_sat(X,P), assignment(X,B), literal_tuple(P,B), any_rule(_,P).
+
+
+constraint_issue'(X,P):- constraint_issue(P), any_rule(_,P), literal_tuple(P,Y), assignment(X,Y), why(X).
+
+reasons_for_constraint(X,P):- constraint_issue'(_,P), literal_tuple(P,S), assignment(X,S), not why(X).
 
 
 #show depends/3.
 #show fact/1.
-%#show depends_neg/3.
-%#show choice_rule/2.
+#show depends_neg/3.
+#show choice_rule/2.
 %#show not_mentioned/1.
 %#show not_chosen/2.
 %#show not_satisfied/3.
 %#show assignment/2.
 %#show constraint_issue/1.
-%#show test/2.
-#show print/2.
+#show reasons_for_constraint/2.
