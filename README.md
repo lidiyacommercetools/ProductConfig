@@ -6,6 +6,11 @@ The code requires three inputs: problem encoding, the answer set that is under r
 
 The answer set should be in format : answer(a). answer(b). Where {a,b} is the answer set. If the answer set is empty, please include empty_set. in the input code.
 
-The atom to be explained should be presented as: why(a). Where "a" is the atom the user would like to be explained.
+The atom to be explained should be represented as why(a) if "a" is part of the answer set, and as why_not(a) id "a" is not part of the answer set.
 
-Facts for the particular case of the encoding need to be included in a separate file from the actual problem encoding. This is due to grounding. If the facts are included in the encoding, they will not be used in the explanation. Therefore, File One should include the problem encoding, and File Two should include the why(), answer(), as well as facts in the format fact(). An example can be found in the Sudoku encoding in the repository.
+File One to Include:
+Problem encoding where facts are coded as #external "fact". This is mandatory due to grounding. If this is ommited, facts will not be used as reasoning in the explanation.
+
+File Two to Include:
+Answer set in question and the atom to explain. Also include all the facts as "fact(...)". An example for Sudoku is in the repository.
+
