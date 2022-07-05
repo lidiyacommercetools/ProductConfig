@@ -1,0 +1,5 @@
+fact(a). fact(b).
+
+answer(a). answer(b). answer(e).
+
+why(e).
