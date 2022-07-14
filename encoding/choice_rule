@@ -1,3 +1,8 @@
+any_rule(V,P):- 1{rule(disjunction(V),normal(P)); rule(choice(V),normal(P)); rule(choice(V),sum(P)); rule(disjunction(V),sum(P)) }1,
+atom_tuple(V), literal_tuple(P).
+any_choice_rule(V,P):- 1{rule(choice(V),normal(P)); rule(choice(V),sum(P))}1, atom_tuple(V), literal_tuple(P).
+any_disjunction_rule(V,P):- 1{rule(disjunction(V),normal(P)); rule(disjunction(V),sum(P)) }1, atom_tuple(V), literal_tuple(P).
+
 assignment(X,Y):- output(X,Q), literal_tuple(Q,Y).
 
 
@@ -44,12 +49,37 @@ valid_choice(X,P):- in_choice_rule(X,P), in_constraint(X,V), constraint_sat(Y,V)
 % Number of valid choices in the choice rule
 num_valid_choices(N,P):- N = #count{X : valid_choice(X,P)}, weighted_literal_tuple(P,_,_).
 
+
+% A choice can be made in a choice rule if it has a rule body and the body is satisfied {a}:-b.  b.
+body_unsat(A):- rule(disjunction(A),normal(B)), literal_tuple(B,C), assignment(X,C), not answer(X).
+body_unsat(A):- rule(disjunction(A),normal(B)), literal_tuple(B,-C), assignment(X,C), answer(X).
+sat_choice_rule(P):- rule(disjunction(V),sum(P,_)), rule(disjunction(V-2),normal(_)), not body_unsat(V-2).
+sat_choice_rule(P):- rule(disjunction(V),sum(P,_)), rule(disjunction(V-2),normal(B)), not literal_tuple(B,_).
+
 % Option 1: Mandatory participation. {}=Q and there are Q valid options in the choice rule
 
-option_one(P):- num_valid_choices(N,P), specific_num_choices(A,V),rule(disjunction(V),sum(P,_)), N=A.
+option_one(P):- sat_choice_rule(P),num_valid_choices(N,P), specific_num_choices(A,V),rule(disjunction(V),sum(P,_)), N=A.
 choice_rule_option1(X,P):- why(X),valid_choice(X,P), option_one(P).
 
 % Option 2: Mandatory participation. Q{} and there are Q valid options in the choice rule
 
-option_two(P):-num_valid_choices(N,P), min_choices(N,P).
+option_two(P):-sat_choice_rule(P),num_valid_choices(N,P), min_choices(N,P).
 choice_rule_option2(X,P):- why(X), option_two(P), valid_choice(X,P).
+
+% Option 3: The choice made was optional.
+
+choice_rule_option3(X,P):- why(X), sat_choice_rule(P),not option_one(P), not option_two(P), valid_choice(X,P).
+
+
+
+
+%#show constraint/2.
+%#show in_constraint/2.
+%#show constraint_sat/2.
+%#show in_choice_rule/2.
+%#show valid_choice/2.
+%#show num_valid_choices/2.
+#show choice_rule_option1/2.
+#show choice_rule_option2/2.
+#show choice_rule_option3/2.
+
