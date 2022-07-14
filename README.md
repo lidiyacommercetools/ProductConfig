@@ -12,5 +12,5 @@ File One to Include:
 Problem encoding where facts are coded as #external "fact". This is mandatory due to grounding. If this is ommited, facts will not be used as reasoning in the explanation.
 
 File Two to Include:
-Answer set in question and the atom to explain. Also include all the facts as "fact(...)". An example for Sudoku is in the repository.
+Answer set in question and the atom to explain. An example for Sudoku is in the repository.
 
