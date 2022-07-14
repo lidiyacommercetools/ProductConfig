@@ -1,8 +1,3 @@
-fact(sudoku(1,1,3)). fact(sudoku(2,2,1)). fact(sudoku(3,2,4)). fact(sudoku(4,1,2)).
-fact(sudoku(1,3,4)). fact(sudoku(3,4,3)). fact(sudoku(4,3,1)). fact(sudoku(2,4,2)).
-
-
-
 % Answer Set in question
 
 % Original input values
