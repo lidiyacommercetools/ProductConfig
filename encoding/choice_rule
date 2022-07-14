@@ -1,0 +1,55 @@
+assignment(X,Y):- output(X,Q), literal_tuple(Q,Y).
+
+
+% multiple sums for heads P and P+1. This means that the lower range is not 0 and the max value is not the total possible max.
+multi_sum(P):- rule(disjunction(P),sum(Q,Q1)),rule(disjunction(P+1),sum(Q,T)), Q1!=T.
+
+% Count of atoms in a choice rule
+num_choices(N,P):- N = #count{X : in_choice_rule(X,P)}, weighted_literal_tuple(P,_,_).
+
+% the min and max number of choices to be made for choice rule Q
+min_choices(Q1,Q):- multi_sum(P), rule(disjunction(P),sum(Q,Q1)).
+min_choices(Q1,Q):- not multi_sum(A), rule(choice(A),normal(_)), rule(disjunction(A+1),sum(Q,Q1)), rule(disjunction(A+2),normal(_)), not rule(disjunction(A+3),normal(_)).
+max_choices(T-1,Q) :- multi_sum(P), rule(disjunction(P+1),sum(Q,T)).
+max_choices(T-1,Q):- rule(disjunction(A),sum(Q,T)), not multi_sum(A), not min_choices(T,Q).
+
+
+% Specific number of atoms to be chosen (not a range)  Q{}Q or {}=Q
+specific_num_choices(A,P):- multi_sum(P), min_choices(A,Q), max_choices(B,Q), B=A.
+
+% Range of atoms to be chosen A{}B-1
+range_choices(A,B-1,P):- multi_sum(P), rule(disjunction(P),sum(Q,A)), rule(disjunction(P+1),sum(Q,B)).
+
+% Atom is part of a choice rule
+
+in_choice_rule(X,P):- assignment(X,Y), weighted_literal_tuple(P,Y,_).
+
+% An atom cannot be chosen in a choice rule if it is removed by a constraint
+constraint(P,V):- rule(disjunction(P),normal(V)), not atom_tuple(P,_), literal_tuple(V,Z), 
+literal_tuple(Q,Z), output(_,Q).
+
+in_constraint(X,V):- constraint(P,V), literal_tuple(V,Z), literal_tuple(Q,Z), output(X,Q).
+in_constraint(X,V):- constraint(P,V), literal_tuple(V,-Z), literal_tuple(Q,Z), output(X,Q).
+
+constraint_sat(X,V):- in_constraint(X,V), assignment(X,N), literal_tuple(V,N), not answer(X), not why(X).
+constraint_sat(X,V):- in_constraint(X,V), assignment(X,N), literal_tuple(V,-N), answer(X), not why(X).
+
+
+% An atom is a valid choice if it is not in any constraints
+valid_choice(X,P):- in_choice_rule(X,P), not in_constraint(X,_).
+
+% An atom is a valid choice if it is part of a constraint that was already "satisfied"
+valid_choice(X,P):- in_choice_rule(X,P), in_constraint(X,V), constraint_sat(Y,V), Y!=X.
+
+% Number of valid choices in the choice rule
+num_valid_choices(N,P):- N = #count{X : valid_choice(X,P)}, weighted_literal_tuple(P,_,_).
+
+% Option 1: Mandatory participation. {}=Q and there are Q valid options in the choice rule
+
+option_one(P):- num_valid_choices(N,P), specific_num_choices(A,V),rule(disjunction(V),sum(P,_)), N=A.
+choice_rule_option1(X,P):- why(X),valid_choice(X,P), option_one(P).
+
+% Option 2: Mandatory participation. Q{} and there are Q valid options in the choice rule
+
+option_two(P):-num_valid_choices(N,P), min_choices(N,P).
+choice_rule_option2(X,P):- why(X), option_two(P), valid_choice(X,P).
