@@ -29,5 +29,7 @@
               1{b;c}.
               
               :- a,b.
+              
+    - Optional: If the choice rule does not fall within the above defined "mandatory" category, the choice made was optional.
          
 
