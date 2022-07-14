@@ -2,13 +2,14 @@
 
 1. What "eliminates" an atom from being a valid choice in a choice rule? 
     - Constraint 
-    - Example: The "b" is not a valid choice in the choice rule because it is eliminated by the constraint.
+        * Example: The "b" is not a valid choice in the choice rule because it is eliminated by the constraint.
     
-      a.
+           a.
       
-      1{b;c}.
+           1{b;c}.
       
-      :- a,b.
+           :- a,b.
+          
       
 2. Why was an atom chosen in a choice rule? Was it mandatory or optional?
     - Mandatory:
