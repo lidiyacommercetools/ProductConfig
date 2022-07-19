@@ -1,3 +1,24 @@
+## Membership
+
+1. Satisfied body for a rule.
+    Example:
+    
+        a.
+        
+        b:- a.
+
+2. Atom is a fact.
+
+
+## Lack of membership
+
+1. Atom does not occur in a rule head.
+
+2. Unsatisfied body of a rule
+
+3. Constraint
+
+
 ## Choice Rules
 
 1. What "eliminates" an atom from being a valid choice in a choice rule? 
