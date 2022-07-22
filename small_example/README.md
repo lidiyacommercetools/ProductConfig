@@ -67,3 +67,27 @@ why(f).
 
 
 ![Image 7-22-22 at 4 37 PM](https://user-images.githubusercontent.com/81679574/180462774-3961a396-aec5-400a-b029-a6d8b73ec71e.jpg)
+
+
+## Example 4:
+
+#external a.
+
+#external b.
+
+{c}.
+
+{d}=1.
+
+e:- a, not c.
+
+f:- b,d,e.
+
+answer(a). answer(b). answer(e). answer(d). answer(f). 
+
+why(f).
+
+![Image 7-22-22 at 5 09 PM](https://user-images.githubusercontent.com/81679574/180469065-c57e0a80-c7d1-452d-9840-ec28f14d2523.jpg)
+
+
+![Image 7-22-22 at 5 11 PM](https://user-images.githubusercontent.com/81679574/180469428-ca0a66c0-4820-4c34-a726-fd5db4e30029.jpg)
