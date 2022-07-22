@@ -1,0 +1,53 @@
+row(1..9). column(1..9). value(1..9).
+
+cell(1,X,Y) :- row(X), column(Y), X<4, Y<4.
+cell(2,X,Y) :- row(X), column(Y), X<4, Y<7, Y>3.
+cell(3,X,Y) :- row(X), column(Y), X<4, Y<10, Y>6.
+cell(4,X,Y) :- row(X), column(Y), X<7, X>3, Y<4.
+cell(5,X,Y) :- row(X), column(Y), X<7, X>3, Y<7, Y>3.
+cell(6,X,Y) :- row(X), column(Y), X<7, X>3, Y<10, Y>6.
+cell(7,X,Y) :- row(X), column(Y), X<10, X>6, Y<4.
+cell(8,X,Y) :- row(X), column(Y), X<10, X>6, Y<7, Y>3.
+cell(9,X,Y) :- row(X), column(Y), X<10, X>6, Y<10, Y>6.
+
+
+sudoku1(2,3,8). sudoku1(3,3,9). sudoku1(5,4,1). sudoku1(6,4,2). sudoku1(4,4,3). sudoku1(1,4,4). sudoku1(8,4,5). sudoku1(7,4,6). sudoku1(3,4,7). sudoku1(9,4,8). sudoku1(2,4,9). sudoku1(1,5,1). sudoku1(2,5,2). sudoku1(3,5,3). sudoku1(7,5,4). 
+
+sudoku(X,Y,N) :- sudoku1(X,Y,N).
+
+
+{sudoku(X,Y,N): value(N)}=1 :- row(X) ,column(Y).
+
+:- sudoku(X,Y,V1), sudoku(A,B,V2), 1{X!=A; Y!=B}2, cell(X,Y,C,D),cell(A,B,C,D), V1=V2.
+:- sudoku(X,Y1,N), sudoku(X,Y2,N), Y1!=Y2.
+:- sudoku(X1,Y,N), sudoku(X2,Y,N), X1!=X2.
+
+#external sudoku(2,1,1).
+#external sudoku(2,2,8).
+#external sudoku(1,4,6).
+#external sudoku(1,5,3).
+#external sudoku(1,8,8).
+#external sudoku(2,7,2).
+#external sudoku(3,7,9).
+#external sudoku(3,8,7).
+#external sudoku(4,1,7).
+#external sudoku(4,2,1).
+#external sudoku(5,3,5).
+#external sudoku(5,6,3).
+#external sudoku(4,7,8).
+#external sudoku(4,8,4).
+#external sudoku(6,8,2).
+#external sudoku(6,9,5).
+#external sudoku(8,1,2).
+#external sudoku(7,2,4).
+#external sudoku(8,2,9).
+#external sudoku(7,3,1).
+#external sudoku(7,4,5).
+#external sudoku(8,5,4).
+#external sudoku(9,5,8).
+#external sudoku(8,8,1).
+
+
+
+
+
