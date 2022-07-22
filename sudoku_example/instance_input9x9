@@ -1,0 +1,34 @@
+% Answer Set in question
+
+% Original input values
+answer(sudoku(2,1,1)). answer(sudoku(2,2,8)). answer(sudoku(1,4,6)). answer(sudoku(1,5,3)).
+answer(sudoku(1,8,8)). answer(sudoku(2,7,2)). answer(sudoku(3,7,9)). answer(sudoku(3,8,7)).
+answer(sudoku(4,1,7)). answer(sudoku(4,2,1)). answer(sudoku(5,3,5)). answer(sudoku(5,6,3)).
+answer(sudoku(4,7,8)). answer(sudoku(4,8,4)). answer(sudoku(6,8,2)). answer(sudoku(6,9,5)).
+answer(sudoku(8,1,2)). answer(sudoku(7,2,4)). answer(sudoku(8,2,9)). answer(sudoku(7,3,1)).
+answer(sudoku(7,4,5)). answer(sudoku(8,5,4)). answer(sudoku(9,5,8)). answer(sudoku(8,8,1)).
+
+
+
+
+%Values in the answer set obtained through the encoding
+answer(sudoku(1,1,5)). answer(sudoku(1,2,7)). answer(sudoku(1,3,9)). answer(sudoku(2,3,6)).
+answer(sudoku(3,1,4)). answer(sudoku(3,2,3)). answer(sudoku(3,3,2)). answer(sudoku(1,6,2)).
+answer(sudoku(2,4,9)). answer(sudoku(2,5,7)). answer(sudoku(2,6,4)). answer(sudoku(3,4,8)).
+answer(sudoku(3,5,5)). answer(sudoku(3,6,1)). answer(sudoku(1,7,1)). answer(sudoku(1,9,4)).
+answer(sudoku(2,8,5)). answer(sudoku(2,9,3)). answer(sudoku(3,9,6)). answer(sudoku(4,3,3)).
+answer(sudoku(5,1,8)). answer(sudoku(5,2,2)). answer(sudoku(6,1,9)). answer(sudoku(6,2,6)).
+answer(sudoku(6,3,4)). answer(sudoku(4,4,2)). answer(sudoku(4,5,6)). answer(sudoku(4,6,5)).
+answer(sudoku(5,4,4)). answer(sudoku(5,5,9)). answer(sudoku(6,4,7)). answer(sudoku(6,5,1)).
+answer(sudoku(6,6,8)). answer(sudoku(4,9,9)). answer(sudoku(5,7,7)). answer(sudoku(5,8,6)).
+answer(sudoku(5,9,1)). answer(sudoku(6,7,3)). answer(sudoku(7,1,3)). answer(sudoku(8,3,8)).
+answer(sudoku(9,1,6)). answer(sudoku(9,2,5)). answer(sudoku(9,3,7)). answer(sudoku(7,5,2)).
+answer(sudoku(7,6,7)). answer(sudoku(8,4,3)). answer(sudoku(8,6,6)). answer(sudoku(9,4,1)).
+answer(sudoku(9,6,9)). answer(sudoku(7,7,6)). answer(sudoku(7,8,9)). answer(sudoku(7,9,8)).
+answer(sudoku(8,7,5)). answer(sudoku(8,9,7)). answer(sudoku(9,7,4)). answer(sudoku(9,8,3)).
+answer(sudoku(9,9,2)).
+
+
+
+% Atom we want to know about
+why_not(sudoku(1,1,4)).
