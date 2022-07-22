@@ -40,3 +40,30 @@ why_not(d).
 
 
 Atom "d" is not part of the answer set because of a constraint with atom "b", which is part of the answer set. (:- b,d) And atom "b" is in the answer set because of being chosen in a choise rule. The choice was not mandatory.
+
+
+## Example 3:
+
+
+#external a.
+
+#external b.
+
+{c}.
+
+{d}=1.
+
+e:- a, c.
+
+f:- b,d,e.
+
+answer(a). answer(b). answer(e). answer(d). answer(f). answer(c).
+
+why(f).
+
+
+![Image 7-22-22 at 4 29 PM](https://user-images.githubusercontent.com/81679574/180461108-1ddd9009-d35f-47bd-8d3a-da20404b1b49.jpg)
+
+
+
+![Image 7-22-22 at 4 37 PM](https://user-images.githubusercontent.com/81679574/180462774-3961a396-aec5-400a-b029-a6d8b73ec71e.jpg)
