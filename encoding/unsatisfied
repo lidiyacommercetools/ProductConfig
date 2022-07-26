@@ -1,1 +1,30 @@
+% Option 1: Unsatisfied rule body, but the head is present in the set 
 
+head_present(X,V):- answer_unsat(X), assignment(X,Y), atom_tuple(V,Y).
+body_unsat(X,Y,A,B):- head_present(X,A),any_disjunction_rule(A,B), literal_tuple(B,C), assignment(Y,C), not answer_unsat(Y).
+body_unsat(X,Y,A,B):- head_present(X,A),any_disjunction_rule(A,B), literal_tuple(B,-C), assignment(Y,C), answer_unsat(Y).
+
+%Option 2: Fact is missing from the set
+
+fact(X):- output(X,Y), literal_tuple(Y,Z), external(Z,false).
+missing_fact(X):- fact(X), not answer_unsat(X).
+
+%Option 3: Anti-fact is present ( :- a. )
+
+anti_fact(X):- any_disjunction_rule(A,B), literal_tuple(B,C), not atom_tuple(A,_),
+assignment(X,C), not literal_tuple(B,D), C!=D, assignment(_,D).
+anti_fact_present(X):- anti_fact(X), answer_unsat(X).
+
+%Option 4: Not enough or too many atoms chosen in a choice rule
+
+%Option 5: Violated constraint
+
+%Option 6: Does not occur in a rule head but is present in the set
+
+not_mentioned(X):- answer_unsat(X), not output(X,_), not fact(X).
+
+
+#show body_unsat/4.
+#show missing_fact/1.
+#show anti_fact_present/1.
+#show not_mentioned/1.
