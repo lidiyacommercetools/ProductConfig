@@ -11,13 +11,37 @@ missing_fact(X):- fact(X), not answer_unsat(X).
 
 %Option 3: Anti-fact is present ( :- a. )
 
-anti_fact(X):- any_disjunction_rule(A,B), literal_tuple(B,C), not atom_tuple(A,_),
-assignment(X,C), not literal_tuple(B,D), C!=D, assignment(_,D).
+multi_constraint(P,V,X):- in_constraint(X,V), in_constraint(Y,V), X!=Y, constraint(P,V).
+anti_fact(X):- not multi_constraint(_,V,X), answer_unsat(X), in_constraint(X,V).
+
 anti_fact_present(X):- anti_fact(X), answer_unsat(X).
 
 %Option 4: Not enough or too many atoms chosen in a choice rule
 
+% Option 4a: Not enough choices were made for a choice rule
+
+min_choices(Q1,Q):- multi_sum(P), rule(disjunction(P),sum(Q,Q1)), weighted_literal_tuple(Q,_,_).
+min_choices(Q1,Q):- not multi_sum(P-1), rule(disjunction(P),sum(Q,Q1)), weighted_literal_tuple(Q,_,_).
+
+chosen(X,P):- in_choice_rule(X,P), answer_unsat(X).
+num_chosen(N,P):- N = #count{X : chosen(X,P)}, weighted_literal_tuple(P,_,_).
+
+chosen_not_enough(P,N,N'):- num_chosen(N,P), min_choices(N',P), N'<N.
+
+% Option 4b: Too many choices were made for a choice rule
+%fact(X):- output(X,Y), literal_tuple(Y,Z), external(Z,false).
+head_lit(X,A):- answer_unsat(X), any_disjunction_rule(A,_), atom_tuple(A,C), assignment(X,C).
+rule_unsatisfied_neg(V,P,X):- any_rule(V,P), literal_tuple(P,W), assignment(X,W), not answer_unsat(X).
+rule_unsatisfied(V,P,X):- any_rule(V,P), literal_tuple(P,-W), assignment(X,W), answer_unsat(X).
+
+rule_satisfied(V,P,X):- head_lit(X,V), any_disjunction_rule(V,P), not rule_unsatisfied(V,P,_), answer_unsat(X).
+
 %Option 5: Violated constraint
+
+constraint_sat(P,V,X):- constraint(P,V), literal_tuple(V,B), assignment(X,B), not answer_unsat(X).
+constraint_sat(P,V,X):- constraint(P,V), literal_tuple(V,-B), assignment(X,B), answer_unsat(X).
+violated_constraint(P,V,X):- not constraint_sat(P,V,_), not  anti_fact_present(X),answer_unsat(X), in_constraint(X,V), constraint(P,V).
+
 
 %Option 6: Does not occur in a rule head but is present in the set
 
@@ -28,3 +52,7 @@ not_mentioned(X):- answer_unsat(X), not output(X,_), not fact(X).
 #show missing_fact/1.
 #show anti_fact_present/1.
 #show not_mentioned/1.
+#show violated_constraint/3.
+#show chosen_not_enough/3.
+#show rule_satisfied/3.
+
