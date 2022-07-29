@@ -116,3 +116,13 @@ answer(e). answer(f). answer(g).
 why(g).
 
 ![default](https://user-images.githubusercontent.com/81679574/181789311-d8d087b1-10da-4ee2-9ee8-7703cb237807.png)
+
+
+
+why_not(h).
+
+![default](https://user-images.githubusercontent.com/81679574/181791077-7d69002b-350f-4f77-9dc4-cd7884357f5e.png)
+
+Clingo Output
+
+![Image 7-29-22 at 5 13 PM](https://user-images.githubusercontent.com/81679574/181791206-a156e997-5212-4054-a4f2-f40874e81124.jpg)
