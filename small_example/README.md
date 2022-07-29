@@ -91,3 +91,28 @@ why(f).
 
 
 ![Image 7-22-22 at 5 11 PM](https://user-images.githubusercontent.com/81679574/180469428-ca0a66c0-4820-4c34-a726-fd5db4e30029.jpg)
+
+
+## Example 5:
+
+#external a.
+
+#external b.
+
+#external c.
+
+1{d;e;f}.
+
+g:- a,b,f.
+
+h:- c,d,e.
+
+:- g,d.
+
+answer(a). answer(b). answer(c).
+
+answer(e). answer(f). answer(g).
+
+why(g).
+
+![default](https://user-images.githubusercontent.com/81679574/181789311-d8d087b1-10da-4ee2-9ee8-7703cb237807.png)
