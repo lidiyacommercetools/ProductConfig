@@ -11,24 +11,42 @@ atom_tuple(V), literal_tuple(P).
 any_choice_rule(V,P):- 1{rule(choice(V),normal(P)); rule(choice(V),sum(P,_,_))}1, atom_tuple(V), literal_tuple(P).
 any_disjunction_rule(V,P):- 1{rule(disjunction(V),normal(P)); rule(disjunction(V),sum(P)) }1, atom_tuple(V), literal_tuple(P).
 
-
-
-
 val(1..9).
 
-why_not(sudoku(A,B,D),0):- why(sudoku(A,B,C)), val(D), C!=D.
+why_not(sudoku(D,E,C),0):- cell_path(N), why(sudoku(A,B,C)), cell(N,A,B), cell(N,D,E), not why(sudoku(D,E,C)), not fact(sudoku(D,E,_)).
+why(sudoku(D,E,F),0):- cell_path(N),why(sudoku(A,B,C)), cell(N,A,B), cell(N,D,E), not why(sudoku(D,E,C)), fact(sudoku(D,E,F)).
 
-:-why_not(X,_), not reason(X,_,_,_,_).
-:- why(X,_), not reason(X,_,_,_,_).
-
-
-output(Y):- reason(_,Y,_,_,_).
-
-output_fact(X):- output(X), output(X,Y), literal_tuple(Y,Z), external(Z,false).
-tots(N):- N= #count{ Q: output_fact(Q)}.
-#maximize{N: tots(N)}.
+path(A,B,C,D,0):- why_not(A,0), reason(A,B,C,D,0).
+path(A,B,C,D,0):- why(A,0), reason(A,B,C,D,0).
 
 
+:- path(A,B,_,_,_), why(B).
 
-#show output/1.
-#show tots/1.
+why(Y,1):- path(_,Y,_,constraint,0).
+
+path(A,B,C,D,1):- why(A,1), reason(A,B,C,D,1).
+
+:- path(sudoku(A,B,_),sudoku(A,B,_),_,constraint,_).
+
+
+:- why_not(X,_), not path(X,_,_,_,_).
+%:- why(X,T), why(X,T'), T'>T.
+
+
+{cell_path(N); row_path(X); column_path(Y)}=1 :- row(X), column(Y), cell(N,_,_).
+
+why_not(sudoku(A,D,C),0):- row_path(A), why(sudoku(A,B,C)), not why(sudoku(A,D,C)), column(D), not fact(sudoku(A,D,_)).
+why(sudoku(A,D,F),0):- row_path(A), why(sudoku(A,B,C)), not why(sudoku(A,D,C)), column(D), fact(sudoku(A,D,F)).
+
+
+why_not(sudoku(D,B,C),0):- column_path(A), why(sudoku(A,B,C)), not why(sudoku(D,B,C)), row(D), not fact(sudoku(D,B,_)).
+why(sudoku(D,B,C),0):- column_path(A), why(sudoku(A,B,C)), not why(sudoku(D,B,C)), row(D), fact(sudoku(D,B,_)).
+
+
+tots(N,X,Y):- N = #count{X,Y : path(X,Y,_,constraint,_)}, path(Y,Y,_,fact,_), why_not(X,_), why(Y,_).
+total(V):- V = #sum{N,X,Y: tots(N,X,Y)}.
+#maximize{N: total(N)}.
+
+:- path(_,_,_,opt_choice,1).
+
+#show path/5.
