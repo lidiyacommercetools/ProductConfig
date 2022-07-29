@@ -121,7 +121,7 @@ why(g).
 
 why_not(h).
 
-![default](https://user-images.githubusercontent.com/81679574/181791077-7d69002b-350f-4f77-9dc4-cd7884357f5e.png)
+![default](https://user-images.githubusercontent.com/81679574/181791517-508662e7-6b72-47c4-bd9f-8cc539b9b0b2.png)
 
 Clingo Output
 
