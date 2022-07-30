@@ -15,4 +15,6 @@ Why is cell (X,Y) of the value N?
   
 ![default](https://user-images.githubusercontent.com/81679574/181915457-f370664e-ed34-4cbe-be2a-c20f25aca692.png)
 
-When the explanation ends with "why is the cell of that value", the process begins again anew, creating a circular reasoning.
+When the explanation ends with "why is the cell of that value", the process begins again anew.
+
+Anything that can be proven using only facts, can be treated as a fact itself.
