@@ -2,10 +2,8 @@ To run the sudoku examples, use the files in the "encoding" folder. https://gith
 
 However, replace the "general" and "path" files with the "sudoku_extension" file.
 
-The encoding maximizes the number of original facts that are used in the explanation.
 
-
-## Reasoning
+## Option One for Reasoning
 
 Why is cell (X,Y) of the value N?
 
@@ -18,3 +16,10 @@ Why is cell (X,Y) of the value N?
 When the explanation ends with "why is the cell of that value", the process begins again anew.
 
 Anything that can be proven using only facts, can be treated as a fact itself.
+
+
+## Option Two for Reasoning
+
+Utilizing the unsat core.
+
+![Image 8-15-22 at 8 52 PM](https://user-images.githubusercontent.com/81679574/184697559-428a8b20-fff1-46df-bc8b-e49af304a5f5.jpg)
