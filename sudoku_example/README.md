@@ -18,12 +18,25 @@ Why is cell (X,Y) of the value N?
   
 ![default](https://user-images.githubusercontent.com/81679574/181915457-f370664e-ed34-4cbe-be2a-c20f25aca692.png)
 
-When the explanation ends with "why is the cell of that value", the process begins again anew.
+When the explanation ends with "why is the cell of that value", the process begins again anew. This method only works when the cell (X,Y) can be explained using only opiginal facts. An example of this can be found here. 
 
-Anything that can be proven using only facts, can be treated as a fact itself.
+https://github.com/lidiyacommercetools/ProductConfig/blob/main/sudoku_example/example_9x9.md
 
 
+Since most instances in sudoku require more than just the original facts, this approach is not optimal. For every "why", we have to ask eight "why not", causing the problem to explode. Also, there are circular references, since each cell in the grid depeneds on the other cells, causing circular explanations.
 
+
+A single "why" question results in eight "why not". 
+
+0 non-facts and 8 facts: 0 more "why not"
+1 non-facts and 7 facts: 8 more "why not"
+2 non-facts and 6 facts: 16 more "why not"
+3 non-facts and 5 facts: 24 more "why not"
+4 non-facts and 4 facts: 32 more "why not"
+5 non-facts and 3 facts: 40 more "why not"
+6 non-facts and 2 facts: 48 more "why not"
+7 non-facts and 1 facts: 56 more "why not"
+8 non-facts and 0 facts: 64 more "why not"
 
 ## Option Two for Reasoning
 
