@@ -42,5 +42,11 @@ initial(9,1,7)
 
 Goal: Show how the unsat core explain sudoku(8,1,6).
 
+![Image 8-18-22 at 8 30 PM](https://user-images.githubusercontent.com/81679574/185468310-647b26c6-d1c9-4268-9bc4-191a9f92cf86.jpg)
+
+Cell (7,1) cannot be of value 6 because it is already of value 2. Similarly, cell (9,1) cannot be of value 6 because it is already of value 7. The cells in column 2 cannot be of value 6 because of initial(1,2,6) (a column cannot have the same value twice) and column 3 cannot contain another value 6 as cell (5,3) is already a 6.
+
+(7,1) and (9,1) are explained by the constraint that each cell can not be of multiple values. And cells (7,2),(8,2),(9,2),(7,3),(8,3), and (9,3) are explained by the constraint that each row can contain each value between 1 and 9 only once.
+
 
 ![Image 8-15-22 at 8 52 PM](https://user-images.githubusercontent.com/81679574/184697559-428a8b20-fff1-46df-bc8b-e49af304a5f5.jpg)
