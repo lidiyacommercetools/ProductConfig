@@ -2,6 +2,11 @@ To run the sudoku examples, use the files in the "encoding" folder. https://gith
 
 However, replace the "general" and "path" files with the "sudoku_extension" file.
 
+All examples will be based on the below Sudoku instance.
+
+
+![Image 8-18-22 at 12 08 PM](https://user-images.githubusercontent.com/81679574/185370530-7f762384-9dae-4e62-9db1-10ebba8c94c4.jpg)
+
 
 ## Option One for Reasoning
 
@@ -16,6 +21,10 @@ Why is cell (X,Y) of the value N?
 When the explanation ends with "why is the cell of that value", the process begins again anew.
 
 Anything that can be proven using only facts, can be treated as a fact itself.
+
+
+Example 1: Why is (8,1) the value 6?
+
 
 
 ## Option Two for Reasoning
