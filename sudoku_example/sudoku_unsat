@@ -1,0 +1,34 @@
+
+why(X,0):- why(X).
+why_not(sudoku(A,B,C),0):- why(sudoku(D,E,C),0), cell(N,D,E), cell(N,A,B), (A,B)!=(D,E).
+
+
+answer(sudoku(A,B,C)):- initial(A,B,C).
+
+
+%Body of the rule was not satisfied
+head_lit(X,A):- why_not(X,_), any_disjunction_rule(A,_), atom_tuple(A,C), assignment(X,C).
+rule_unsatisfied_neg(V,P,X):- any_rule(V,P), literal_tuple(P,W), assignment(X,W), not answer(X).
+rule_unsatisfied(V,P,X):- any_rule(V,P), literal_tuple(P,-W), assignment(X,W), answer(X).
+
+rule_issue_neg(X,Y,A,T):- head_lit(X,A), why_not(X,T), rule_unsatisfied_neg(A,_,Y).
+reason(X,-Y,A,rule_issue_neg,T):- rule_issue_neg(X,-Y,A,T).
+
+rule_issue(X,Y,A,T):- head_lit(X,A), why_not(X,T), rule_unsatisfied(A,_,Y).
+reason(X,Y,A,rule_issue,T):- rule_issue(X,Y,A,T).
+
+% Constraint issue  
+
+constraint(P,V):- rule(disjunction(P),normal(V)), not atom_tuple(P,_), literal_tuple(V,Z), 
+literal_tuple(Q,Z), output(_,Q).
+
+%Constraint and contains the why_not atom
+constraint(P,V,Y,T):- constraint(P,V), literal_tuple(V,Z), assignment(Y,Z), why_not(Y,T).
+
+
+
+explain(sudoku(A,B,C),sudoku(D,E,F)):- constraint(P,V,sudoku(A,B,C),_), literal_tuple(V,Z), assignment(sudoku(D,E,F),Z), sudoku(D,E,F)!= sudoku(A,B,C), not initial(A,B,_), initial(D,E,F).
+explain(sudoku(A,B,C), initial(A,B,D)):- why_not(sudoku(A,B,C),_), initial(A,B,D).
+
+
+#show explain/2.
