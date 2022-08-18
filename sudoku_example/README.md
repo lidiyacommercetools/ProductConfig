@@ -48,5 +48,7 @@ Cell (7,1) cannot be of value 6 because it is already of value 2. Similarly, cel
 
 (7,1) and (9,1) are explained by the constraint that each cell can not be of multiple values. And cells (7,2),(8,2),(9,2),(7,3),(8,3), and (9,3) are explained by the constraint that each row can contain each value between 1 and 9 only once.
 
+![Image 8-18-22 at 8 38 PM](https://user-images.githubusercontent.com/81679574/185469612-235ad8bb-54af-485f-848d-d6c1fdbb56f4.jpg)
+
 
 ![Image 8-15-22 at 8 52 PM](https://user-images.githubusercontent.com/81679574/184697559-428a8b20-fff1-46df-bc8b-e49af304a5f5.jpg)
