@@ -23,12 +23,24 @@ When the explanation ends with "why is the cell of that value", the process begi
 Anything that can be proven using only facts, can be treated as a fact itself.
 
 
-Example 1: Why is (8,1) the value 6?
-
 
 
 ## Option Two for Reasoning
 
-Utilizing the unsat core.
+Another approach was to try using an unsat core. Given the original facts, the atom in question was incorporated into a constraint to create an unsat core. The goal is to explain why the unsat core serves as reasoning for why a certain cell is of a certain value.
+
+Example: Looking for an explanation for sudoku(8,1,6). One of the unsat cores is as follows:
+
+initial(1,2,6)
+
+initial(5,3,6)
+
+initial(7,1,2)
+
+initial(9,1,7)
+
+
+Goal: Show how the unsat core explain sudoku(8,1,6).
+
 
 ![Image 8-15-22 at 8 52 PM](https://user-images.githubusercontent.com/81679574/184697559-428a8b20-fff1-46df-bc8b-e49af304a5f5.jpg)
