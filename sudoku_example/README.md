@@ -8,7 +8,7 @@ All examples will be based on the below Sudoku instance.
 ![Image 8-18-22 at 12 08 PM](https://user-images.githubusercontent.com/81679574/185370530-7f762384-9dae-4e62-9db1-10ebba8c94c4.jpg)
 
 
-## Option One for Reasoning
+# Option One for Reasoning
 
 Why is cell (X,Y) of the value N?
 
@@ -38,11 +38,13 @@ A single "why" question results in eight "why not".
 7 non-facts and 1 facts: 56 more "why not"
 8 non-facts and 0 facts: 64 more "why not"
 
-## Option Two for Reasoning
+# Option Two for Reasoning
 
 Another approach was to try using an unsat core. Given the original facts, the atom in question was incorporated into a constraint to create an unsat core. The goal is to explain why the unsat core serves as reasoning for why a certain cell is of a certain value.
 
-# Example 1: Looking for an explanation for sudoku(8,1,6). One of the unsat cores is as follows:
+## Example 1: Looking for an explanation for sudoku(8,1,6). 
+
+One of the unsat cores is as follows:
 
 initial(1,2,6)
 
@@ -64,7 +66,9 @@ Cell (7,1) cannot be of value 6 because it is already of value 2. Similarly, cel
 ![Image 8-18-22 at 8 38 PM](https://user-images.githubusercontent.com/81679574/185469612-235ad8bb-54af-485f-848d-d6c1fdbb56f4.jpg)
 
 
-# Example 2: Looking for an explanation for sudoku(1,1,1). One of the unsat cores is as follows:
+## Example 2: Looking for an explanation for sudoku(1,1,1). 
+
+One of the unsat cores is as follows:
 
 initial(1,2,6)
 
@@ -95,7 +99,15 @@ The problem is that using the meta programming method with ASP, the only way to 
 
 
 
+
 ![Image 8-15-22 at 8 52 PM](https://user-images.githubusercontent.com/81679574/184697559-428a8b20-fff1-46df-bc8b-e49af304a5f5.jpg)
 
 
 The image formalizes the above conclusion. If the unsat core in combination with rules and constraints of sudoku can explain the cell, then the meta programming with ASP can be used. If a strategy is needed to explain the cell, a different method should be used.
+
+
+
+
+# Key Takeaway:
+
+The approaches discussed above work in explanations of sudoku only when the cell in question can be described using initial facts and the three rules of the game (uniqueness in row, uniqueness in column, and uniqueness in the 3x3 block).
