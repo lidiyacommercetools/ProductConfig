@@ -29,7 +29,7 @@ Anything that can be proven using only facts, can be treated as a fact itself.
 
 Another approach was to try using an unsat core. Given the original facts, the atom in question was incorporated into a constraint to create an unsat core. The goal is to explain why the unsat core serves as reasoning for why a certain cell is of a certain value.
 
-Example: Looking for an explanation for sudoku(8,1,6). One of the unsat cores is as follows:
+# Example 1: Looking for an explanation for sudoku(8,1,6). One of the unsat cores is as follows:
 
 initial(1,2,6)
 
@@ -40,7 +40,7 @@ initial(7,1,2)
 initial(9,1,7)
 
 
-Goal: Show how the unsat core explain sudoku(8,1,6).
+Goal: Show how the unsat core explains sudoku(8,1,6).
 
 ![Image 8-18-22 at 8 30 PM](https://user-images.githubusercontent.com/81679574/185468310-647b26c6-d1c9-4268-9bc4-191a9f92cf86.jpg)
 
@@ -51,4 +51,38 @@ Cell (7,1) cannot be of value 6 because it is already of value 2. Similarly, cel
 ![Image 8-18-22 at 8 38 PM](https://user-images.githubusercontent.com/81679574/185469612-235ad8bb-54af-485f-848d-d6c1fdbb56f4.jpg)
 
 
+# Example 2: Looking for an explanation for sudoku(1,1,1). One of the unsat cores is as follows:
+
+initial(1,2,6)
+
+initial(1,8,3)
+
+initial(2,1,8)
+
+initial(4,2,3)
+
+initial(5,3,6)
+
+initial(6,2,1)
+
+initial(7,1,2)
+
+initial(9,1,7)
+
+
+Goal: Show how the unsat core explains sudoku(1,1,1).
+
+![Image 8-18-22 at 8 55 PM](https://user-images.githubusercontent.com/81679574/185473215-9d8ed163-3e2c-4111-aaca-a6ef42f7f16b.jpg)
+
+Based on the three constraints in the original encoding, the unsat core does not explain sudoku(1,1,1).
+
+However, with a combination of the constraints and some sudoku logic, it is possible to use the unsat core to explain sudoku(1,1,1). 
+
+The problem is that using the meta programming method with ASP, the only way to use the logic and tricks of sudoku (outside of the basic rules of the game) is to code every possible strategy. This is not optimal. Therefore, a different method should be used for explanations in sudoky when the cell requires more than just the original facts and rules of the game to derive.
+
+
+
 ![Image 8-15-22 at 8 52 PM](https://user-images.githubusercontent.com/81679574/184697559-428a8b20-fff1-46df-bc8b-e49af304a5f5.jpg)
+
+
+The image formalizes the above conclusion. If the unsat core in combination with rules and constraints of sudoku can explain the cell, then the meta programming with ASP can be used. If a strategy is needed to explain the cell, a different method should be used.
