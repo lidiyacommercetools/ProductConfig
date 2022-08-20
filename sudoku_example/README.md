@@ -8,6 +8,12 @@ All examples will be based on the below Sudoku instance.
 ![Image 8-18-22 at 12 08 PM](https://user-images.githubusercontent.com/81679574/185370530-7f762384-9dae-4e62-9db1-10ebba8c94c4.jpg)
 
 
+
+![Image 8-20-22 at 11 00 AM](https://user-images.githubusercontent.com/81679574/185737651-151a05fb-5bea-4694-b855-d854f4bfcaa5.jpg)
+
+
+
+
 # Option One for Reasoning
 
 Why is cell (X,Y) of the value N?
