@@ -53,6 +53,12 @@ A single "why" question results in eight "why not".
 8 non-facts and 0 facts: 64 more "why not"
 
 
+## Example 1: Looking for an explanation for sudoku(1,1,1). 
+
+![default](https://user-images.githubusercontent.com/81679574/185745697-14a4efa6-1426-451c-9faf-c21df2378082.png)
+
+The image shows that when the cell cannot be explained using only original facts, the problem explodes. The explanation for sudoku(1,1,1) uses two non-fact values, and the problem becomes 16 "why_not" questions. 
+
 # Option Two for Reasoning
 
 Another approach was to try using an unsat core. Given the original facts, the atom in question was incorporated into a constraint to create an unsat core. The goal is to explain why the unsat core serves as reasoning for why a certain cell is of a certain value.
