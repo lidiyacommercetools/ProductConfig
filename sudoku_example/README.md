@@ -29,14 +29,23 @@ Since most instances in sudoku require more than just the original facts, this a
 A single "why" question results in eight "why not". 
 
 0 non-facts and 8 facts: 0 more "why not"
+
 1 non-facts and 7 facts: 8 more "why not"
+
 2 non-facts and 6 facts: 16 more "why not"
+
 3 non-facts and 5 facts: 24 more "why not"
+\
 4 non-facts and 4 facts: 32 more "why not"
+
 5 non-facts and 3 facts: 40 more "why not"
+
 6 non-facts and 2 facts: 48 more "why not"
+
 7 non-facts and 1 facts: 56 more "why not"
+
 8 non-facts and 0 facts: 64 more "why not"
+
 
 # Option Two for Reasoning
 
