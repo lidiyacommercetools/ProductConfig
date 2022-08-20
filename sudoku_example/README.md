@@ -35,7 +35,7 @@ A single "why" question results in eight "why not".
 2 non-facts and 6 facts: 16 more "why not"
 
 3 non-facts and 5 facts: 24 more "why not"
-\
+
 4 non-facts and 4 facts: 32 more "why not"
 
 5 non-facts and 3 facts: 40 more "why not"
@@ -75,7 +75,31 @@ Cell (7,1) cannot be of value 6 because it is already of value 2. Similarly, cel
 ![Image 8-18-22 at 8 38 PM](https://user-images.githubusercontent.com/81679574/185469612-235ad8bb-54af-485f-848d-d6c1fdbb56f4.jpg)
 
 
-## Example 2: Looking for an explanation for sudoku(1,1,1). 
+## Example 2: Looking for an explanation for sudoku(3,1,3). 
+
+One of the unsat cores is as follows:
+
+initial(1,8,3)
+
+initial(2,1,8)
+
+initial(4,2,3)
+
+initial(7,3,3)
+
+
+Goal: Show how the unsat core explains sudoku(3,1,3).
+
+
+
+
+![Image 8-20-22 at 10 45 AM](https://user-images.githubusercontent.com/81679574/185736845-5a8781e5-f3fb-4464-9170-500ce8b9e31f.jpg)
+
+
+![Image 8-20-22 at 10 48 AM](https://user-images.githubusercontent.com/81679574/185736973-cbe6718c-e06a-4bc9-94e3-9729bed4be5f.jpg)
+
+
+## Example 3: Looking for an explanation for sudoku(1,1,1). 
 
 One of the unsat cores is as follows:
 
