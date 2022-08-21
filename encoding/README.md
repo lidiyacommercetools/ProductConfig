@@ -9,6 +9,8 @@
 
 2. Atom is a fact.
 
+3. Chosen in a choice rule.
+
 
 ## Lack of membership
 
@@ -52,6 +54,6 @@
               
               :- a,b.
               
-    - Optional: If the choice rule does not fall within the above defined "mandatory" category, the choice made was optional.
+    - Optional: If the choice rule does not fall within the above defined "mandatory" category, the choice made was optionally.
          
 
