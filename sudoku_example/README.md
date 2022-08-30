@@ -152,6 +152,15 @@ The image formalizes the above conclusion. If the unsat core in combination with
 
 
 
+explain_der(sudoku(2,1,6),initial(2,1,8),1) explain_der(sudoku(7,1,6),initial(7,1,2),1) explain_der(sudoku(9,1,6),initial(9,1,7),1) 
+explain_der(sudoku(1,1,6),sudoku(1,2,6),1) explain_der(sudoku(3,1,6),sudoku(1,2,6),1) explain_der(sudoku(5,1,6),sudoku(5,3,6),1) explain_der(sudoku(4,1,6),sudoku(5,3,6),1) explain_der(sudoku(6,1,6),sudoku(5,3,6),1)
+
+
+
+
+explain_der(sudoku(2,1,3),initial(2,1,8),2) explain_der(sudoku(7,1,3),initial(7,1,2),2) explain_der(sudoku(9,1,3),initial(9,1,7),2)   explain_der(sudoku(1,1,3),sudoku(1,8,3),2) explain_der(sudoku(4,1,3),sudoku(4,2,3),2) explain_der(sudoku(5,1,3),sudoku(4,2,3),2) explain_der(sudoku(6,1,3),sudoku(4,2,3),2) 
+
+
 
 # Key Takeaway:
 
