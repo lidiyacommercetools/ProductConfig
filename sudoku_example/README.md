@@ -63,7 +63,7 @@ The image shows that when the cell cannot be explained using only original facts
 
 Another approach was to try using an unsat core. Given the original facts, the atom in question was incorporated into a constraint to create an unsat core. The goal is to explain why the unsat core serves as reasoning for why a certain cell is of a certain value.
 
-## Example 1: Looking for an explanation for sudoku(8,1,6). 
+## Example 2: Looking for an explanation for sudoku(8,1,6). 
 
 One of the unsat cores is as follows:
 
@@ -87,7 +87,7 @@ Cell (7,1) cannot be of value 6 because it is already of value 2. Similarly, cel
 ![Image 8-18-22 at 8 38 PM](https://user-images.githubusercontent.com/81679574/185469612-235ad8bb-54af-485f-848d-d6c1fdbb56f4.jpg)
 
 
-## Example 2: Looking for an explanation for sudoku(3,1,3). 
+## Example 3: Looking for an explanation for sudoku(3,1,3). 
 
 One of the unsat cores is as follows:
 
@@ -111,7 +111,7 @@ Goal: Show how the unsat core explains sudoku(3,1,3).
 ![Image 8-20-22 at 10 48 AM](https://user-images.githubusercontent.com/81679574/185736973-cbe6718c-e06a-4bc9-94e3-9729bed4be5f.jpg)
 
 
-## Example 3: Looking for an explanation for sudoku(1,1,1). 
+## Example 4: Looking for an explanation for sudoku(1,1,1). 
 
 One of the unsat cores is as follows:
 
@@ -152,16 +152,99 @@ The image formalizes the above conclusion. If the unsat core in combination with
 
 
 
-explain_der(sudoku(2,1,6),initial(2,1,8),1) explain_der(sudoku(7,1,6),initial(7,1,2),1) explain_der(sudoku(9,1,6),initial(9,1,7),1) 
-explain_der(sudoku(1,1,6),sudoku(1,2,6),1) explain_der(sudoku(3,1,6),sudoku(1,2,6),1) explain_der(sudoku(5,1,6),sudoku(5,3,6),1) explain_der(sudoku(4,1,6),sudoku(5,3,6),1) explain_der(sudoku(6,1,6),sudoku(5,3,6),1)
+# Option Three for Reasoning
+
+The third approach is to combine the previous two. The problem with approach one is that there are too many options to choose from when explaining a cell. However, if only the unsat core was to be used, it would significantly reduce the computation. 
+
+Step 1 is to look at any "intermediate" derivations. Using the unsat core, can we explain any other cells within the Sudoku grid? If yes, perhaps this derived cell will be used to explain the cell we initially asked about.
+
+Step 2 is to use the derived cells as well as the unsat core to answer the initial "why" question.
 
 
+## Example 5: Looking for an explanation for sudoku(1,1,1). 
 
 
-explain_der(sudoku(2,1,3),initial(2,1,8),2) explain_der(sudoku(7,1,3),initial(7,1,2),2) explain_der(sudoku(9,1,3),initial(9,1,7),2)   explain_der(sudoku(1,1,3),sudoku(1,8,3),2) explain_der(sudoku(4,1,3),sudoku(4,2,3),2) explain_der(sudoku(5,1,3),sudoku(4,2,3),2) explain_der(sudoku(6,1,3),sudoku(4,2,3),2) 
+One of the unsat cores is as follows:
+
+initial(1,2,6)
+
+initial(1,8,3)
+
+initial(2,1,8)
+
+initial(4,2,3)
+
+initial(5,3,6)
+
+initial(6,2,1)
+
+initial(7,1,2)
+
+initial(9,1,7)
 
 
+Step 1: Intermediate derivations of sudoku(8,1,6)
 
-# Key Takeaway:
 
-The approaches discussed above work in explanations of sudoku only when the cell in question can be described using initial facts and the three rules of the game (uniqueness in row, uniqueness in column, and uniqueness in the 3x3 block).
+explain_der(sudoku(2,1,6),initial(2,1,8),1) 
+
+explain_der(sudoku(7,1,6),initial(7,1,2),1) 
+
+explain_der(sudoku(9,1,6),initial(9,1,7),1) 
+
+explain_der(sudoku(1,1,6),sudoku(1,2,6),1) 
+
+explain_der(sudoku(3,1,6),sudoku(1,2,6),1) 
+
+explain_der(sudoku(5,1,6),sudoku(5,3,6),1) 
+
+explain_der(sudoku(4,1,6),sudoku(5,3,6),1) 
+
+explain_der(sudoku(6,1,6),sudoku(5,3,6),1)
+
+
+![Image 8-30-22 at 6 17 PM](https://user-images.githubusercontent.com/81679574/187493347-8e21f9fd-628d-4e53-abaf-6192958eb872.jpg)
+
+
+Step 1: Intermediate derivations of sudoku(3,1,3)
+
+
+explain_der(sudoku(2,1,3),initial(2,1,8),2) 
+
+explain_der(sudoku(7,1,3),initial(7,1,2),2) 
+
+explain_der(sudoku(9,1,3),initial(9,1,7),2)   
+
+explain_der(sudoku(1,1,3),sudoku(1,8,3),2) 
+
+explain_der(sudoku(4,1,3),sudoku(4,2,3),2) 
+
+explain_der(sudoku(5,1,3),sudoku(4,2,3),2) 
+
+explain_der(sudoku(6,1,3),sudoku(4,2,3),2) 
+
+
+![Image 8-30-22 at 6 23 PM](https://user-images.githubusercontent.com/81679574/187493450-807e3de9-2134-4ed1-9cdc-fa3371157b00.jpg)
+
+
+Step 2: Explanation of sudoku(1,1,1)
+
+
+explain(sudoku(8,1,6),derived) 
+
+explain(sudoku(4,1,1),sudoku(6,2,1)) 
+
+explain(sudoku(5,1,1),sudoku(6,2,1)) 
+
+explain(sudoku(6,1,1),sudoku(6,2,1)) 
+
+explain(sudoku(2,1,1),initial(2,1,8)) 
+
+explain(sudoku(7,1,1),initial(7,1,2)) 
+
+explain(sudoku(9,1,1),initial(9,1,7)) 
+
+explain(sudoku(3,1,3),derived)
+
+![Image 8-30-22 at 6 32 PM](https://user-images.githubusercontent.com/81679574/187493587-a15e8b0f-e366-40b6-a104-144d417101dd.jpg)
+
