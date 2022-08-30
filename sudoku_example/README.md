@@ -55,21 +55,21 @@ A single "why" question results in eight "why not".
 
 ## Pseudocode for reasoning option one
 
-choose row, column, or 3x3 block
+  choose row, column, or 3x3 block
 
-for why(sudoku(A,B,C)) 
+  for why(sudoku(A,B,C)) 
 
-  if row
+   if row
   
-    return why_not(sudoku(A,B',C)) where B'!=B and column(B')
+     return why_not(sudoku(A,B',C)) where B'!=B and column(B')
   
-  if column
+   if column
     
-    return why_not(sudoku(A',B,C)) where A'!=A and row(A')
+     return why_not(sudoku(A',B,C)) where A'!=A and row(A')
   
-  if 3x3 block
+   if 3x3 block
   
-    return why_not(sudoku(A',B',C)) where sudoku(A',B',_) and sudoku(A,B,_) are in 3x3 block D and (A',B') != (A,B)
+     return why_not(sudoku(A',B',C)) where sudoku(A',B',_) and sudoku(A,B,_) are in 3x3 block D and (A',B') != (A,B)
 
 
 ## Example 1: Looking for an explanation for sudoku(1,1,1). 
