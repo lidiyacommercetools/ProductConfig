@@ -55,6 +55,7 @@ A single "why" question results in eight "why not".
 
 ## Pseudocode for reasoning option one
 
+![Image 8-30-22 at 7 36 PM](https://user-images.githubusercontent.com/81679574/187505700-6c361812-a63a-4cc1-a179-7616996aa1c4.jpg)
 
 
 ## Example 1: Looking for an explanation for sudoku(1,1,1). 
