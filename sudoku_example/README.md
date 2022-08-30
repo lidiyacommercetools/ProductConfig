@@ -183,7 +183,7 @@ initial(7,1,2)
 initial(9,1,7)
 
 
-Step 1: Intermediate derivations of sudoku(8,1,6)
+### Step 1: Intermediate derivations of sudoku(8,1,6)
 
 
 explain_der(sudoku(2,1,6),initial(2,1,8),1) 
@@ -206,7 +206,7 @@ explain_der(sudoku(6,1,6),sudoku(5,3,6),1)
 ![Image 8-30-22 at 6 17 PM](https://user-images.githubusercontent.com/81679574/187493347-8e21f9fd-628d-4e53-abaf-6192958eb872.jpg)
 
 
-Step 1: Intermediate derivations of sudoku(3,1,3)
+### Step 1: Intermediate derivations of sudoku(3,1,3)
 
 
 explain_der(sudoku(2,1,3),initial(2,1,8),2) 
@@ -227,7 +227,7 @@ explain_der(sudoku(6,1,3),sudoku(4,2,3),2)
 ![Image 8-30-22 at 6 23 PM](https://user-images.githubusercontent.com/81679574/187493450-807e3de9-2134-4ed1-9cdc-fa3371157b00.jpg)
 
 
-Step 2: Explanation of sudoku(1,1,1)
+### Step 2: Explanation of sudoku(1,1,1)
 
 
 explain(sudoku(8,1,6),derived) 
