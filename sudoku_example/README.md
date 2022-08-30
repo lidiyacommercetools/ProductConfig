@@ -253,3 +253,11 @@ explain(sudoku(3,1,3),derived)
 
 ![Image 8-30-22 at 6 32 PM](https://user-images.githubusercontent.com/81679574/187493587-a15e8b0f-e366-40b6-a104-144d417101dd.jpg)
 
+
+## Example 5: Looking for an explanation for sudoku(9,3,1). 
+
+explain(sudoku(2,7,6),derived) explain(sudoku(8,1,6),derived) explain(sudoku(7,6,6),derived) explain(sudoku(7,2,1),sudoku(6,2,1)) explain(sudoku(8,2,1),sudoku(6,2,1)) explain(sudoku(9,2,1),sudoku(6,2,1)) explain(sudoku(7,1,1),initial(7,1,2)) explain(sudoku(9,1,1),initial(9,1,7)) explain(sudoku(7,3,1),initial(7,3,3)) explain(sudoku(9,7,3),derived) explain(sudoku(9,9,6),derived)
+
+
+
+
