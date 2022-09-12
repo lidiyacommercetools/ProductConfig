@@ -27,7 +27,7 @@ Why is cell (X,Y) of the value N?
 ![Image 9-12-22 at 4 56 PM](https://user-images.githubusercontent.com/81679574/189687019-8823656b-6064-40f0-a174-6e53171d5209.jpg)
 
 
-When the explanation ends with "why is the cell of that value", the process begins again anew. This method only works when the cell (X,Y) can be explained using only opiginal facts. An example of this can be found here. 
+When the explanation ends with "why is the cell of that value", the process begins again anew. This method only works when the cell (X,Y) can be explained using only original facts, and none of the derived entries. An example of a "successful" explanation using Option One can be found here. 
 
 https://github.com/lidiyacommercetools/ProductConfig/blob/main/sudoku_example/example_9x9.md
 
@@ -57,7 +57,6 @@ A single "why" question results in eight "why not".
 
 
 ## Pseudocode for reasoning option one
-
 
 
 ![Image 9-12-22 at 4 44 PM](https://user-images.githubusercontent.com/81679574/189684296-1a50b3b4-5654-4629-85b7-bd7005909300.jpg)
