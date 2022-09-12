@@ -71,6 +71,10 @@ The image shows that when the cell cannot be explained using only original facts
 
 Another approach was to try using an unsat core. Given the original facts, the atom in question was incorporated into a constraint to create an unsat core. The goal is to explain why the unsat core serves as reasoning for why a certain cell is of a certain value.
 
+
+
+![Image 9-12-22 at 8 22 PM](https://user-images.githubusercontent.com/81679574/189728066-116a51ee-94d3-423d-aa89-0ec59667b263.jpg)
+
 ## Example 2: Looking for an explanation for sudoku(8,1,6). 
 
 % clingo why general unsatcore ins1_sudoku ins1_reified option_three
