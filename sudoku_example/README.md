@@ -177,6 +177,10 @@ In the diagram, an intermediate derivation N is based on the unsat core and the 
 Step 2 is to use the derived cells as well as the unsat core to answer the initial "why" question.
 
 
+
+% clingo why general unsatcore ins1_sudoku ins1_reified option_three
+
+
 ## Example 5: Looking for an explanation for sudoku(1,1,1). 
 
 
