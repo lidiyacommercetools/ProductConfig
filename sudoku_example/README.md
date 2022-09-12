@@ -73,6 +73,9 @@ Another approach was to try using an unsat core. Given the original facts, the a
 
 ## Example 2: Looking for an explanation for sudoku(8,1,6). 
 
+% clingo why general unsatcore ins1_sudoku ins1_reified option_three
+
+
 One of the unsat cores is as follows:
 
 initial(1,2,6)
@@ -175,10 +178,6 @@ In the diagram, an intermediate derivation N is based on the unsat core and the 
 
 
 Step 2 is to use the derived cells as well as the unsat core to answer the initial "why" question.
-
-
-
-% clingo why general unsatcore ins1_sudoku ins1_reified option_three
 
 
 ## Example 5: Looking for an explanation for sudoku(1,1,1). 
