@@ -162,9 +162,17 @@ The image formalizes the above conclusion. If the unsat core in combination with
 
 # Option Three for Reasoning
 
-The third approach is to combine the previous two. The problem with approach one is that there are too many options to choose from when explaining a cell. However, if only the unsat core was to be used, it would significantly reduce the computation. 
+
+The third approach is to combine the previous two. The problem with approach one is that there are too many options to choose from when explaining a cell. However, if only the unsat core was to be used in the explanation, it would significantly reduce the computation. 
 
 Step 1 is to look at any "intermediate" derivations. Using the unsat core, can we explain any other cells within the Sudoku grid? If yes, perhaps this derived cell will be used to explain the cell we initially asked about.
+
+
+
+![Image 9-12-22 at 7 20 PM](https://user-images.githubusercontent.com/81679574/189716967-9c842aa4-292a-4ecd-9241-c8339aa055e7.jpg)
+
+In the diagram, an intermediate derivation N is based on the unsat core and the previous (N-1) intermediate derivations. Intermediate derivation 1 is based solely on the unsat core.
+
 
 Step 2 is to use the derived cells as well as the unsat core to answer the initial "why" question.
 
