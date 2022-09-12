@@ -254,10 +254,23 @@ explain(sudoku(3,1,3),derived)
 ![Image 8-30-22 at 6 32 PM](https://user-images.githubusercontent.com/81679574/187493587-a15e8b0f-e366-40b6-a104-144d417101dd.jpg)
 
 
-## Example 5: Looking for an explanation for sudoku(9,3,1). 
+# Option Four for Reasoning
 
-explain(sudoku(2,7,6),derived) explain(sudoku(8,1,6),derived) explain(sudoku(7,6,6),derived) explain(sudoku(7,2,1),sudoku(6,2,1)) explain(sudoku(8,2,1),sudoku(6,2,1)) explain(sudoku(9,2,1),sudoku(6,2,1)) explain(sudoku(7,1,1),initial(7,1,2)) explain(sudoku(9,1,1),initial(9,1,7)) explain(sudoku(7,3,1),initial(7,3,3)) explain(sudoku(9,7,3),derived) explain(sudoku(9,9,6),derived)
+The problem of Proofdoku uses a different initial Sudoku encoding that is of interest. Instead of generating every possible option and then removing most based on constraints, the proofdoku encoding specifies limits on the initial choice rule. 
 
+![Image 9-12-22 at 4 25 PM](https://user-images.githubusercontent.com/81679574/189679592-7ab6ceec-2b1b-46fa-9248-6387450f3f9b.jpg)
+
+The goal was to utilise this encoding in partnership with the original Choice Rule encoding available at https://github.com/lidiyacommercetools/ProductConfig/blob/main/encoding/choice_rule
+
+However, if atoms are introduced that are facts, the choice rules are still able to produce other fill/3 without producing an unsat set. Therefore, the original Choice Rule encoding would not be of use, without a special extension aimed specifically at this use case.
+
+## Example 6: 
+
+fill(1,1,1). %Provided as a fact
+
+fill(1,1,2). %From a choice rule
+
+Based on the rules of sudoku that we know, this cannot happen. However, nothing in the encoding states that it cannot.
 
 
 
