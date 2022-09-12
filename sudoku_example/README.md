@@ -22,7 +22,10 @@ Why is cell (X,Y) of the value N?
   
   Option 2: Why is the cell (X,Y) not another value?
   
-![default](https://user-images.githubusercontent.com/81679574/181915457-f370664e-ed34-4cbe-be2a-c20f25aca692.png)
+
+
+![Image 9-12-22 at 4 56 PM](https://user-images.githubusercontent.com/81679574/189687019-8823656b-6064-40f0-a174-6e53171d5209.jpg)
+
 
 When the explanation ends with "why is the cell of that value", the process begins again anew. This method only works when the cell (X,Y) can be explained using only opiginal facts. An example of this can be found here. 
 
