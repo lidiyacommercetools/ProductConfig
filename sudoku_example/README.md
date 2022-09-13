@@ -184,6 +184,10 @@ In the diagram, an intermediate derivation N is based on the unsat core and the 
 Step 2 is to use the derived cells as well as the unsat core to answer the initial "why" question.
 
 
+![Image 9-13-22 at 3 16 PM](https://user-images.githubusercontent.com/81679574/189911062-277fb53f-ca5c-4e60-83a7-433c562390af.jpg)
+
+
+
 ## Example 5: Looking for an explanation for sudoku(1,1,1). 
 
 
