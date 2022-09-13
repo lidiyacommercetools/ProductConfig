@@ -282,6 +282,8 @@ The goal was to utilise this encoding in partnership with the original Choice Ru
 
 However, if atoms are introduced that are facts, the choice rules are still able to produce other fill/3 without producing an unsat set. Therefore, the original Choice Rule encoding would not be of use, without a special extension aimed specifically at this use case.
 
+The Proofdoku paper ( https://adamsmith.as/papers/answer-set-programming-in-proofdoku.pdf ) states that "and if a cell has a clue, the number filled in that cell must match the clue." but that is not included in the code snippit. 
+
 ## Example 6: 
 
 fill(1,1,1). %Provided as a fact
