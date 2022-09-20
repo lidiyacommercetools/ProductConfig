@@ -102,6 +102,11 @@ Cell (7,1) cannot be of value 6 because it is already of value 2. Similarly, cel
 ![Image 8-18-22 at 8 38 PM](https://user-images.githubusercontent.com/81679574/185469612-235ad8bb-54af-485f-848d-d6c1fdbb56f4.jpg)
 
 
+The below image was done using clingraph. The red number is the number we are trying to explain. The black numbers are the unsat core.
+
+![example1](https://user-images.githubusercontent.com/81679574/191353152-338f2fe7-7cc5-46f5-9742-a8be86235fcb.png)
+
+
 ## Example 3: Looking for an explanation for sudoku(3,1,3). 
 
 One of the unsat cores is as follows:
