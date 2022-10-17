@@ -1,0 +1,87 @@
+time(0..3).
+
+why(X,0):- why(X).
+why_not(sudoku(A,B,C),0):- why(sudoku(D,E,C),0), subgrid(D,E,N), subgrid(A,B,N), (A,B)!=(D,E), method(cell,0).
+why_not(sudoku(D,E',C),0):- why(sudoku(D,E,C),0), val(E'), E!=E', method(row,0).
+why_not(sudoku(D',E,C),0):- why(sudoku(D,E,C),0), val(D'), D!=D', method(column,0).
+
+{method(row,T);method(column,T);method(cell,T)}=1:- time(T).
+
+answer(sudoku(A,B,C)):- initial(A,B,C).
+
+assignment(X,Y):- output(X,Q), literal_tuple(Q,Y).
+
+constraint(P,V):- rule(disjunction(P),normal(V)), not atom_tuple(P,_), literal_tuple(V,Z), 
+literal_tuple(Q,Z), output(_,Q).
+
+constraint(P,V,Y,T):- constraint(P,V), literal_tuple(V,Z), assignment(Y,Z), why_not(Y,T).
+
+
+
+explain(sudoku(A,B,C),sudoku(D,E,F)):- constraint(P,V,sudoku(A,B,C),_), literal_tuple(V,Z), assignment(sudoku(D,E,F),Z), sudoku(D,E,F)!= sudoku(A,B,C), not initial(A,B,_), initial(D,E,F), not why(sudoku(D,E,F)).
+explain(sudoku(A,B,C),sudoku(D,E,F)):- constraint(P,V,sudoku(A,B,C),_), literal_tuple(V,Z), assignment(sudoku(D,E,F),Z), sudoku(D,E,F)!= sudoku(A,B,C), not initial(A,B,_), derived(D,E,F,0),not why(sudoku(D,E,F),0).
+
+explain(sudoku(A,B,C), initial(A,B,D)):- why_not(sudoku(A,B,C),_), initial(A,B,D).
+explain(sudoku(A,B,C), derived):- derived(A,B,C,_).
+
+check(N):- N= #count{X: explain(X,_)}.
+:- check(N), N<8.
+:- why(sudoku(A,B,C)), explain(_,sudoku(A,B,C)).
+
+
+
+why_derived(sudoku(X,Y,Z),T+1):- derived(X,Y,Z,T).
+
+why_not_derived(sudoku(A,B,C),T):- why_derived(sudoku(D,E,C),T), subgrid(D,E,N), subgrid(A,B,N), (A,B)!=(D,E), method(cell,T).
+why_not_derived(sudoku(D,E',C),T):- why_derived(sudoku(D,E,C),T), val(E'), E!=E', method(row,T).
+why_not_derived(sudoku(D',E,C),T):- why_derived(sudoku(D,E,C),T), val(D'), D!=D', method(column,T).
+
+constraint_derived(P,V,Y,T):- constraint(P,V), literal_tuple(V,Z), assignment(Y,Z), why_not_derived(Y,T).
+
+explain_der(sudoku(A,B,C),sudoku(D,E,F),T):- constraint_derived(P,V,sudoku(A,B,C),T), literal_tuple(V,Z), assignment(sudoku(D,E,F),Z), sudoku(D,E,F)!= sudoku(A,B,C), not initial(A,B,_), initial(D,E,F), not why(sudoku(D,E,F)).
+explain_der(sudoku(A,B,C), initial(A,B,D),T):- why_not_derived(sudoku(A,B,C),T), initial(A,B,D).
+
+explain_der(sudoku(A,B,C),sudoku(D,E,F),T):- constraint(P,V,sudoku(A,B,C),T), T>1, literal_tuple(V,Z), assignment(sudoku(D,E,F),Z), sudoku(D,E,F)!= sudoku(A,B,C), not initial(A,B,_), derived(D,E,F,T'),T'<T, not why(sudoku(D,E,F)).
+
+#minimize{T,sudoku(A,B,C): explain_der(sudoku(A,B,C),_,T)}.
+
+cannot(sudoku(X,Y,N'), initial(X,Y,N),T):- initial(X,Y,N), N!=N', val(N'), time(T).
+cannot(sudoku(X',Y,N), initial(X,Y,N),T):- initial(X,Y,N), val(X'), X!=X', time(T).
+cannot(sudoku(X,Y',N), initial(X,Y,N),T):- initial(X,Y,N), val(Y'), Y!=Y', time(T).
+cannot(sudoku(X',Y',N), initial(X,Y,N),T):- initial(X,Y,N), subgrid(X,Y,Z), 
+subgrid(X',Y',Z), (X',Y')!= (X,Y), time(T).
+
+
+cannot(sudoku(X,Y,N'), initial(X,Y,N),T):- derived(X,Y,N,T'), N!=N', val(N'), T>T', time(T).
+cannot(sudoku(X',Y,N), initial(X,Y,N),T):- derived(X,Y,N,T'), val(X'), X!=X', T>T', time(T).
+cannot(sudoku(X,Y',N), initial(X,Y,N),T):- derived(X,Y,N,T'), val(Y'), Y!=Y', T>T', time(T).
+cannot(sudoku(X',Y',N), initial(X,Y,N),T):- derived(X,Y,N,T'), subgrid(X,Y,Z), 
+subgrid(X',Y',Z), (X',Y')!= (X,Y), T>T', time(T).
+
+
+possible(X,Y,N,T):- not cannot(sudoku(X,Y,N),_,T), not cannot(sudoku(X,Y,N),_,T'), time(T), time(T'), val(X), val(Y), val(N).
+
+
+
+count_row(X,N,Q,T):- Q= #count{Y,N,T: possible(X,Y,N,T)},val(X), val(N), time(T).
+count_column(Y,N,Q,T):- Q= #count{X,N,T: possible(X,Y,N,T)},val(Y), val(N), time(T).
+count_block(Z,N,Q,T):- Q= #count{X,Y,N,T: possible(X,Y,N,T), subgrid(X,Y,Z)}, val(N), val(Z), time(T).
+
+
+
+
+has_to_block(sudoku(A,B,C),0):- count_block(Z,C,1,0), possible(A,B,C,0), subgrid(A,B,Z), not initial(A,B,C).
+has_to_row(sudoku(A,B,C),0):- count_row(A,C,1,0), possible(A,B,C,0), not initial(A,B,C).
+has_to_column(sudoku(A,B,C),0):- count_column(B,C,1,0), possible(A,B,C,0), not initial(A,B,C).
+
+
+
+has_to_block(sudoku(A,B,C),T):- count_block(Z,C,1,T), possible(A,B,C,T), subgrid(A,B,Z), not derived(A,B,C,0), time(T), T>0.
+has_to_row(sudoku(A,B,C),T):- count_row(A,C,1,T), possible(A,B,C,T), not derived(A,B,C,0), time(T), T>0.
+has_to_column(sudoku(A,B,C),T):- count_column(B,C,1,T), possible(A,B,C,T), not derived(A,B,C,0), time(T), T>0.
+
+derived(X,Y,Z,T):- has_to_block(sudoku(X,Y,Z),T), not initial(X,Y,Z).
+derived(X,Y,Z,T):- has_to_row(sudoku(X,Y,Z),T), not initial(X,Y,Z).
+derived(X,Y,Z,T):- has_to_column(sudoku(X,Y,Z),T), not initial(X,Y,Z).
+
+#show explain/2.
