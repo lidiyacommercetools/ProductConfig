@@ -1,0 +1,48 @@
+time(0..3).
+
+why(X,0):- why(X).
+why_not(sudoku(A,B,C),0):- why(sudoku(D,E,C),0), cell(N,D,E), cell(N,A,B), (A,B)!=(D,E), method(cell,0).
+why_not(sudoku(D,E',C),0):- why(sudoku(D,E,C),0), column(E'), E!=E', method(row,0).
+why_not(sudoku(D',E,C),0):- why(sudoku(D,E,C),0), row(D'), D!=D', method(column,0).
+
+{method(row,T);method(column,T);method(cell,T)}=1:- time(T).
+
+answer(sudoku(A,B,C)):- initial(A,B,C).
+
+
+constraint(P,V):- rule(disjunction(P),normal(V)), not atom_tuple(P,_), literal_tuple(V,Z), 
+literal_tuple(Q,Z), output(_,Q).
+
+constraint(P,V,Y,T):- constraint(P,V), literal_tuple(V,Z), assignment(Y,Z), why_not(Y,T).
+
+
+
+explain(sudoku(A,B,C),sudoku(D,E,F)):- constraint(P,V,sudoku(A,B,C),_), literal_tuple(V,Z), assignment(sudoku(D,E,F),Z), sudoku(D,E,F)!= sudoku(A,B,C), not initial(A,B,_), initial(D,E,F), not why(sudoku(D,E,F)).
+explain(sudoku(A,B,C),sudoku(D,E,F)):- constraint(P,V,sudoku(A,B,C),_), literal_tuple(V,Z), assignment(sudoku(D,E,F),Z), sudoku(D,E,F)!= sudoku(A,B,C), not initial(A,B,_), derived(D,E,F,0),not why(sudoku(D,E,F),0).
+
+explain(sudoku(A,B,C), initial(A,B,D)):- why_not(sudoku(A,B,C),_), initial(A,B,D).
+explain(sudoku(A,B,C), derived):- derived(A,B,C,_).
+
+check(N):- N= #count{X: explain(X,_)}.
+:- check(N), N<8.
+:- why(sudoku(A,B,C)), explain(_,sudoku(A,B,C)).
+
+
+
+why_derived(sudoku(X,Y,Z),T+1):- derived(X,Y,Z,T).
+
+why_not_derived(sudoku(A,B,C),T):- why_derived(sudoku(D,E,C),T), cell(N,D,E), cell(N,A,B), (A,B)!=(D,E), method(cell,T).
+why_not_derived(sudoku(D,E',C),T):- why_derived(sudoku(D,E,C),T), column(E'), E!=E', method(row,T).
+why_not_derived(sudoku(D',E,C),T):- why_derived(sudoku(D,E,C),T), row(D'), D!=D', method(column,T).
+
+constraint_derived(P,V,Y,T):- constraint(P,V), literal_tuple(V,Z), assignment(Y,Z), why_not_derived(Y,T).
+
+explain_der(sudoku(A,B,C),sudoku(D,E,F),T):- constraint_derived(P,V,sudoku(A,B,C),T), literal_tuple(V,Z), assignment(sudoku(D,E,F),Z), sudoku(D,E,F)!= sudoku(A,B,C), not initial(A,B,_), initial(D,E,F), not why(sudoku(D,E,F)).
+explain_der(sudoku(A,B,C), initial(A,B,D),T):- why_not_derived(sudoku(A,B,C),T), initial(A,B,D).
+
+explain_der(sudoku(A,B,C),sudoku(D,E,F),T):- constraint(P,V,sudoku(A,B,C),T), T>1, literal_tuple(V,Z), assignment(sudoku(D,E,F),Z), sudoku(D,E,F)!= sudoku(A,B,C), not initial(A,B,_), derived(D,E,F,T'),T'<T, not why(sudoku(D,E,F)).
+
+#minimize{T,sudoku(A,B,C): explain_der(sudoku(A,B,C),_,T)}.
+
+
+#show explain/2.
