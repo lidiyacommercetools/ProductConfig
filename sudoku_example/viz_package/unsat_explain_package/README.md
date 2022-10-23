@@ -1,4 +1,7 @@
-To run the explain sudoku package: clingo sudoku_explain reified_sudoku_encoding why unsat_core sudoku_encoding
+To run the explain sudoku package: 
+
+clingo sudoku_explain.lp reified_sudoku_encoding.lp why.lp sudoku_encoding.lp unsat_core.lp
+
 
 Where:
 
