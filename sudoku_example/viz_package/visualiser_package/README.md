@@ -1,18 +1,18 @@
 To run the visualiser: 
 
-clingo sudoku_encoding  clin_input clin_instances -n 0 --outf=2 | clingraph --view --dir='out/sudoku' --format=png --out=render --prefix=viz_ --engine=neato --default-graph=sudoku --viz-encoding=clin_viz --name-format=model_{model_number}
+clingo sudoku_encoding.lp  clin_input.lp clin_instances.lp -n 0 --outf=2 | clingraph --view --dir='out/sudoku' --format=png --out=render --prefix=viz_ --engine=neato --default-graph=sudoku --viz-encoding=clin_viz.lp --name-format=model_{model_number}
 
-clin_input : Unsat core, the why atom, and the explanation to be modeled. An example can be found here   https://github.com/lidiyacommercetools/ProductConfig/blob/main/sudoku_example/viz_package/visualiser_package/sample_clin_input
+clin_input.lp : Unsat core, the why atom, and the explanation to be modeled. An example can be found here   https://github.com/lidiyacommercetools/ProductConfig/blob/main/sudoku_example/viz_package/visualiser_package/sample_clin_input
 
-sudoku_encoding : https://github.com/lidiyacommercetools/ProductConfig/blob/main/sudoku_example/viz_package/unsat_core_package/sudoku_encoding
+sudoku_encoding.lp : https://github.com/lidiyacommercetools/ProductConfig/blob/main/sudoku_example/viz_package/unsat_core_package/sudoku_encoding
 
-clin_instances: The instances for your particular sudoku. An example can be found here https://github.com/lidiyacommercetools/ProductConfig/blob/main/sudoku_example/viz_package/sample_clin_instances
+clin_instances.lp : The instances for your particular sudoku. An example can be found here https://github.com/lidiyacommercetools/ProductConfig/blob/main/sudoku_example/viz_package/sample_clin_instances
 
 
 
 Running 
 
-clingo sudoku_encoding  sample_clin_input clin_instances -n 0 --outf=2 | clingraph --view --dir='out/sudoku' --format=png --out=render --prefix=viz_ --engine=neato --default-graph=sudoku --viz-encoding=clin_viz --name-format=model_{model_number}
+clingo sudoku_encoding.lp  sample_clin_input.lp clin_instances.lp -n 0 --outf=2 | clingraph --view --dir='out/sudoku' --format=png --out=render --prefix=viz_ --engine=neato --default-graph=sudoku --viz-encoding=clin_viz.lp --name-format=model_{model_number}
 
 would result in the following two images.
 
