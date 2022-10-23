@@ -18,4 +18,6 @@ STEPS:
 
 To pipe results from step 1 to step 2.
 
-% clingo unsat_xplain.lp sudoku_encoding.lp easy_unsat_input.lp -V0 --out-atomf=%s. | head -n 1 | clingo - sudoku_explain.lp reified_sudoku_encoding.lp easy_why.lp sudoku_encoding.lp
+clingo unsat_xplain.lp sudoku_encoding.lp easy_unsat_input.lp -V0 --out-atomf=%s. | head -n 1 | clingo - sudoku_explain.lp reified_sudoku_encoding.lp easy_why.lp sudoku_encoding.lp
+
+clingo unsat_xplain.lp sudoku_encoding.lp easy_unsat_input.lp -V0 --out-atomf=%s. | head -n 1 | clingo - sudoku_explain.lp reified_sudoku_encoding.lp easy_why.lp sudoku_encoding.lp -V0 --out-atomf=%s. | head -n 1 | clingo - sudoku_encoding.lp easy_unsat_core.lp easy_why.lp sample_instances.lp -n 0 --outf=2 | clingraph --view --dir='out/sudoku' --format=png --out=render --prefix=viz_ --engine=neato --default-graph=sudoku --viz-encoding=clin_viz.lp --name-format=model_{model_number}
