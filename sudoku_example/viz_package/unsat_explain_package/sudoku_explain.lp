@@ -21,11 +21,11 @@ constraint(P,V,Y):- constraint(P,V), literal_tuple(V,Z), assignment(Y,Z).
 
 explain(sudoku(A,B,C),sudoku(D,E,F)):- why_not(sudoku(A,B,C)), constraint(P,V,sudoku(A,B,C)), constraint(P,V,sudoku(D,E,F)), 
 (A,B,C)!=(D,E,F), answer(sudoku(D,E,F)).
-explain(sudoku(A,B,C),sudoku(A,B,D)):- why_not(sudoku(A,B,C)), answer(sudoku(A,B,D)).
+explain(sudoku(A,B,C),sudoku(A,B,D)):- why_not(sudoku(A,B,C)), derived(A,B,D,_).
+explain(sudoku(A,B,C),initial(A,B,D)):- why_not(sudoku(A,B,C)), initial(A,B,D).
 
 
 
-%:- why_not(sudoku(A,B,C)), not explain(sudoku(A,B,C),_).
 
 
 cannot(sudoku(X,Y,N'), initial(X,Y,N),T):- initial(X,Y,N), N!=N', val(N'), time(T).
@@ -58,9 +58,9 @@ count_block(Z,N,Q,T):- Q= #count{X,Y,N,T: possible(X,Y,N,T), subgrid(X,Y,Z)}, va
 
 
 
-has_to(sudoku(A,B,C),T,cell):- count_block(Z,C,1,T), possible(A,B,C,T), subgrid(A,B,Z), not initial(A,B,C).
-has_to(sudoku(A,B,C),T,row):- count_row(A,C,1,T), possible(A,B,C,T), not initial(A,B,C).
-has_to(sudoku(A,B,C),T,column):- count_column(B,C,1,T), possible(A,B,C,T), not initial(A,B,C).
+has_to(sudoku(A,B,C),T,cell):- count_block(Z,C,1,T), possible(A,B,C,T), subgrid(A,B,Z), not initial(A,B,C), not why(A,B,C).
+has_to(sudoku(A,B,C),T,row):- count_row(A,C,1,T), possible(A,B,C,T), not initial(A,B,C), not why(A,B,C).
+has_to(sudoku(A,B,C),T,column):- count_column(B,C,1,T), possible(A,B,C,T), not initial(A,B,C), not why(A,B,C).
 
 
 
@@ -80,18 +80,18 @@ constraint_derived(P,V,Y,T):- constraint(P,V), literal_tuple(V,Z), assignment(Y,
 
 
 explain_der(sudoku(A,B,C),sudoku(D,E,F),T):- constraint_derived(P,V,sudoku(A,B,C),T), literal_tuple(V,Z), 
-assignment(sudoku(D,E,F),Z), sudoku(D,E,F)!= sudoku(A,B,C), not initial(A,B,_), initial(D,E,F), not why(sudoku(D,E,F)).
+assignment(sudoku(D,E,F),Z), sudoku(D,E,F)!= sudoku(A,B,C), not initial(A,B,_), initial(D,E,F), not why(sudoku(D,E,F)), not derived(D,E,F,T).
 
 explain_der(sudoku(A,B,C), initial(A,B,D),T):- why_not_derived(sudoku(A,B,C),T), initial(A,B,D).
 
-explain_der(sudoku(A,B,C),sudoku(D,E,F),T):- constraint(P,V,sudoku(A,B,C)), T>1, literal_tuple(V,Z), 
-assignment(sudoku(D,E,F),Z), sudoku(D,E,F)!= sudoku(A,B,C), not initial(A,B,_), derived(D,E,F,T), not why(sudoku(D,E,F)).
+%explain_der(sudoku(A,B,C),sudoku(D,E,F),T):- constraint(P,V,sudoku(A,B,C)), literal_tuple(V,Z), 
+%assignment(sudoku(D,E,F),Z), sudoku(D,E,F)!= sudoku(A,B,C), not initial(A,B,_), not why(sudoku(D,E,F)), derived(D,E,F,T'), T'<T, time(T).
 
 
 %#show answer/1.
 %#show why_not/2.
 #show explain/2.
-%#show explain_der/3.
+#show explain_der/3.
 %#show derived/4.
 %#show count_test/2.
 %#show why_not_derived/2.
