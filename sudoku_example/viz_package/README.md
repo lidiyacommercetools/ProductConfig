@@ -14,3 +14,8 @@ STEPS:
 2. Calculate explanation using the unsat core
 
 3. Run the visualizer 
+
+
+To pipe results from step 1 to step 2.
+
+% clingo unsat_xplain.lp sudoku_encoding.lp easy_unsat_input.lp -V0 --out-atomf=%s. | head -n 1 | clingo - sudoku_explain.lp reified_sudoku_encoding.lp easy_why.lp sudoku_encoding.lp
