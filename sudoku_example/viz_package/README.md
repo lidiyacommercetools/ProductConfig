@@ -7,6 +7,11 @@ clin_input.lp : This file has to contain information regarding which cell you wo
 reified_sudoku_encoding.lp : This is the reified version of the sudoku encoding as well as the case specific instances. An example can be found here: https://github.com/lidiyacommercetools/ProductConfig/blob/main/sudoku_example/viz_package/reified_sudoku_encoding.lp
 
 
+
+![DED25B41-8D3C-4083-A47D-01AA3695AD09](https://user-images.githubusercontent.com/81679574/198845059-c801b90c-d20e-4989-b176-1fd6f9edbfa7.jpeg)
+
+
+
 STEPS:
 
 1. Calculate or provide unsat core
@@ -18,6 +23,12 @@ STEPS:
 
 
 Example: why(1,9,1)
+
+
+![9219FCBA-393E-44FD-B6BE-096AE1099D53](https://user-images.githubusercontent.com/81679574/198845072-6b130c05-674b-4bbd-bf3f-d38406f6934a.jpeg)
+
+
+
 
 clingo sudoku_encoding.lp unsat_explain.lp sample_unsat_input.lp -V0 | clingo sudoku_explain.lp reified_sudoku_encoding.lp sample_why.lp sudoku_encoding.lp sample_clin_instances.lp unsat_core.lp -V0 --out-atomf=%s. | head -n 1 > explanation_input.lp | clingo - sudoku_encoding.lp sample_clin_instances.lp unsat_core.lp sample_why.lp explanation_input.lp -n 0 --outf=2 | clingraph --view --dir='out/sudoku' --format=png --out=render --prefix=viz_ --engine=neato --default-graph=sudoku --viz-encoding=clin_viz.lp
 
