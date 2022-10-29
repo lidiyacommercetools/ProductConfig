@@ -1,4 +1,0 @@
-initial(1,1,7).
-initial(1,3,2).
-initial(3,5,6).
-initial(2,9,6).
