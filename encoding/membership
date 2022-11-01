@@ -4,7 +4,7 @@ rule_unsatisfied(P):- any_rule(V,P), literal_tuple(P,W), assignment(X,W), not an
 rule_unsatisfied(P):- any_rule(V,P), literal_tuple(P,-W), assignment(X,W), answer(X).
 
 depends(X,Y,P,T):- why_assignment(X,N,T), answer(Y), assignment(Y,Q), literal_tuple(P,Q),  
-any_disjunction_rule(V,P), atom_tuple(V,N), not rule_unsatisfied(P).
+any_disjunction_rule(V,P), atom_tuple(V,N), not rule_unsatisfied(P), not fact(X).
 
 reason(X,Y,P,rule_dependency,T):- depends(X,Y,P,T).
 
