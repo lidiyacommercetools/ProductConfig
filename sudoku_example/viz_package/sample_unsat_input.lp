@@ -1,7 +1,7 @@
 assume(initial(X,Y,V)) :- initial(X,Y,V).
 
 % The cell you would like explained.
-:- sudoku(1,9,1).
+:- why(sudoku(_,_,_)).
 
 % The initial facts 
 
