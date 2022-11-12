@@ -2,7 +2,7 @@
 not_mentioned(X,T):- why_not(X,T), not output(X,_), not fact(X).
 reason(X,X,not_mentioned,not_mentioned,T):- not_mentioned(X,T).
 
-% Single constraint :-b. (Anti-rule??)
+% Single constraint :-b. 
 
 mult(X,P):- constraint(P,V,X,_), literal_tuple(V,Y), assignment(Z,Y), Z!=X.
 anti_rule(X,P,T):- not mult(X,P), why_not(X,T), constraint(P,_,X,T).
