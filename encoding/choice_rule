@@ -36,10 +36,10 @@ constraint_sat1(X,V):- in_constraint(X,V), assignment(X,N), literal_tuple(V,-N),
 
 
 % An atom is a valid choice if it is not in any constraints
-valid_choice(X,P):- in_choice_rule(X,P), not in_constraint(X,_).
+valid_choice(X,P):- in_choice_rule(X,P), not in_constraint(X,_), not fact(X).
 
 % An atom is a valid choice if it is part of a constraint that was already "satisfied"
-valid_choice(X,P):- in_choice_rule(X,P), in_constraint(X,V), constraint_sat1(Y,V), Y!=X.
+valid_choice(X,P):- in_choice_rule(X,P), in_constraint(X,V), constraint_sat1(Y,V), Y!=X, not fact(X).
 
 % Number of valid choices in the choice rule
 num_valid_choices(N,P):- N = #count{X : valid_choice(X,P)}, weighted_literal_tuple(P,_,_).
