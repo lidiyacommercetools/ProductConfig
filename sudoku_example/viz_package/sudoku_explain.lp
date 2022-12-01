@@ -81,16 +81,17 @@ count_block(Z,N,Q,T):- Q= #count{X,Y,N,T: possible(X,Y,N,T), subgrid(X,Y,Z)}, va
 
 % A cell (X,Y) has to be of value N if the cell has only one option, N 
 
-has_to(sudoku(A,B,C),T,cell):- count_block(Z,C,1,T), possible(A,B,C,T), subgrid(A,B,Z), not initial_unsat(initial(A,B,C)), not why(A,B,C).
-has_to(sudoku(A,B,C),T,row):- count_row(A,C,1,T), possible(A,B,C,T), not initial_unsat(initial(A,B,C)), not why(A,B,C).
-has_to(sudoku(A,B,C),T,column):- count_column(B,C,1,T), possible(A,B,C,T), not initial_unsat(initial(A,B,C)), not why(A,B,C).
+has_to(sudoku(A,B,C),T,cell):- count_block(Z,C,1,T), possible(A,B,C,T), subgrid(A,B,Z), not initial_unsat(initial(A,B,C)).
+has_to(sudoku(A,B,C),T,row):- count_row(A,C,1,T), possible(A,B,C,T), not initial_unsat(initial(A,B,C)).
+has_to(sudoku(A,B,C),T,column):- count_column(B,C,1,T), possible(A,B,C,T), not initial_unsat(initial(A,B,C)).
 
 
 % A cell has been derived if there is only one possible value it can be, and it is not part of the unsat core or previously derived
 derived(X,Y,Z,1):- has_to(sudoku(X,Y,Z),0,_), not initial_unsat(initial(X,Y,Z)).
-derived(X,Y,Z,T+1):- has_to(sudoku(X,Y,Z),T,_), not initial_unsat(initial(X,Y,Z)), T!=0, {not derived(X,Y,Z,T')}=T, time(T'), T'<=T, T'!=0.
+derived(X,Y,Z,T+1):- has_to(sudoku(X,Y,Z),T,_), not initial_unsat(initial(X,Y,Z)), T!=0, {not derived(X,Y,Z,T')}=T, time(T'), 
+T'<=T, T'!=0, not stop(T''), T''<T, time(T'').
 
-
+stop(T) :- why(sudoku(A,B,C)), derived(A,B,C,T).
 
 % Given that a cell has been derived, provide an explanation as to why
 why_derived(sudoku(X,Y,Z),T):- derived(X,Y,Z,T).
