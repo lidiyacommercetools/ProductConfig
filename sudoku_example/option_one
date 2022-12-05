@@ -30,7 +30,6 @@ path(A,B,C,D,1):- why(A,1), reason(A,B,C,D,1).
 
 
 :- why_not(X,_), not path(X,_,_,_,_).
-%:- why(X,T), why(X,T'), T'>T.
 
 
 {cell_path(N); row_path(X); column_path(Y)}=1 :- row(X), column(Y), cell(N,_,_).
