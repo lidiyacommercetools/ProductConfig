@@ -28,7 +28,7 @@ Example: why(1,9,1)
 ![9219FCBA-393E-44FD-B6BE-096AE1099D53](https://user-images.githubusercontent.com/81679574/198845072-6b130c05-674b-4bbd-bf3f-d38406f6934a.jpeg)
 
 
-clingo --output=reify sudoku_encoding.lp > sudoku_reified.lp | clingo - sudoku_encoding.lp unsat_explain.lp sample_unsat_input.lp -V0 | clingo sudoku_explain.lp reified_sudoku_encoding.lp sample_why.lp sudoku_encoding.lp sample_clin_instances.lp unsat_core.lp -V0 --out-atomf=%s. | head -n 1 > explanation_input.lp | clingo - sudoku_encoding.lp sample_clin_instances.lp unsat_core.lp sample_why.lp explanation_input.lp -n 0 --outf=2 | clingraph --view --dir='out/sudoku' --format=png --out=render --prefix=viz_ --engine=neato --default-graph=sudoku --viz-encoding=clin_viz.lp
+clingo --output=reify sudoku_encoding.lp > reified_sudoku_encoding.lp | clingo - sudoku_encoding.lp unsat_explain.lp sample_unsat_input.lp -V0 | clingo sudoku_explain.lp reified_sudoku_encoding.lp sample_why.lp sudoku_encoding.lp sample_clin_instances.lp unsat_core.lp -V0 --out-atomf=%s. | head -n 1 > explanation_input.lp | clingo - sudoku_encoding.lp sample_clin_instances.lp unsat_core.lp sample_why.lp explanation_input.lp -n 0 --outf=2 | clingraph --view --dir='out/sudoku' --format=png --out=render --prefix=viz_ --engine=neato --default-graph=sudoku --viz-encoding=clin_viz.lp
 
 
 ![0](https://user-images.githubusercontent.com/81679574/198844334-ef25232b-ed51-4c6d-9ceb-43188202ff30.png)
