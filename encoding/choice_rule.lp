@@ -36,10 +36,10 @@ constraint_sat1(X,V):- in_constraint(X,V), assignment(X,N), literal_tuple(V,-N),
 
 
 % An atom is a valid choice if it is not in any constraints
-valid_choice(X,P):- in_choice_rule(X,P), not in_constraint(X,_), not fact(X), not depends(X,_,_,_).
+valid_choice(X,P):- in_choice_rule(X,P), not in_constraint(X,_),
 
 % An atom is a valid choice if it is part of a constraint that was already "satisfied"
-valid_choice(X,P):- in_choice_rule(X,P), in_constraint(X,V), constraint_sat1(Y,V), Y!=X, not fact(X), not depends(X,_,_,_).
+valid_choice(X,P):- in_choice_rule(X,P), in_constraint(X,V), constraint_sat1(Y,V), Y!=X.
 
 % Number of valid choices in the choice rule
 num_valid_choices(N,P):- N = #count{X : valid_choice(X,P)}, weighted_literal_tuple(P,_,_).
@@ -55,13 +55,13 @@ sat_choice_rule(P):- rule(disjunction(V),sum(P,_)), rule(disjunction(V-3),normal
 % Option 1: Mandatory participation. {}=Q and there are Q valid options in the choice rule
 
 option_one(P):- sat_choice_rule(P),num_valid_choices(N,P), specific_num_choices(A,V),rule(disjunction(V),sum(P,_)), N=A.
-choice_rule_option1(X,P,T):- why(X,T),valid_choice(X,P), option_one(P), not fact(X).
+choice_rule_option1(X,P,T):- why(X,T),valid_choice(X,P), option_one(P), not fact(X), not depends(X,_,_,_).
 reason(X,X,P,mand_choice,T):- choice_rule_option1(X,P,T).
 
 % Option 2: Mandatory participation. Q{} and there are Q valid options in the choice rule
 
 option_two(P):-1{sat_choice_rule(P);no_body(V)},num_valid_choices(N,P), min_choices(N,P).
-choice_rule_option2(X,P,T):- why(X,T), option_two(P), valid_choice(X,P), not fact(X).
+choice_rule_option2(X,P,T):- why(X,T), option_two(P), valid_choice(X,P), not fact(X), not depends(X,_,_,_).
 reason(X,X,P,mand_choice,T):- choice_rule_option2(X,P,T).
 
 % Option 3: The choice made was optional.
