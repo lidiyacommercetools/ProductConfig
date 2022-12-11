@@ -75,6 +75,6 @@ reason(X,X,P,opt_choice,T):- choice_rule_option3(X,P,T).
 % Why was an atom not chosen in a choice rule? Constraint, body not satisfied, or optional choice was made.
 option_one_not(X,P):- why_not(X,T), not valid_choice(X,_), in_constraint(X,P).
 option_two_not(X,P):- why_not(X,T), not sat_choice_rule(P), in_choice_rule(X,P).
-option_three_not(X,P,T):- why_not(X,T), not option_one_not(X,_), not option_two_not(X,_), in_choice_rule(X,P), not reason(X,_,_,constraint,_).
+option_three_not(X,P,T):- why_not(X,T), not reason(X,_,_,constraint,_), not reason(X,_,_,rule_issue,_).
 reason(X,X,P,opt_choice_not,T):- option_three_not(X,P,T).
 
