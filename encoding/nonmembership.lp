@@ -1,6 +1,6 @@
 % Atom does not occur in a rule head
 not_mentioned(X,T):- why_not(X,T), not output(X,_), not fact(X).
-reason(X,X,not_mentioned,not_mentioned,T):- not_mentioned(X,T).
+reason(X,X,not_mentioned,not_mentioned,T):- not_mentioned(X,T), why_not(X,T).
 
 % Single constraint :-b. 
 
@@ -17,10 +17,10 @@ rule_unsatisfied_neg(V,P,X):- any_rule(V,P), literal_tuple(P,W), assignment(X,W)
 rule_unsatisfied(V,P,X):- any_rule(V,P), literal_tuple(P,-W), assignment(X,W), answer(X).
 
 rule_issue_neg(X,Y,A,T):- head_lit(X,A), why_not(X,T), rule_unsatisfied_neg(A,_,Y).
-reason(X,-Y,A,rule_issue_neg,T):- rule_issue_neg(X,-Y,A,T).
+reason(X,-Y,A,rule_issue_neg,T):- rule_issue_neg(X,-Y,A,T), why_not(X,T).
 
 rule_issue(X,Y,A,T):- head_lit(X,A), why_not(X,T), rule_unsatisfied(A,_,Y).
-reason(X,Y,A,rule_issue,T):- rule_issue(X,Y,A,T).
+reason(X,Y,A,rule_issue,T):- rule_issue(X,Y,A,T), why_not(X,T).
 
 
 % Constraint issue  
@@ -49,4 +49,4 @@ problem_atom(Y,W,P,V,T):- constraint_chosen(P,V,Y), why_not(Y,T), literal_tuple(
 problem_atom_neg(Y,W,P,V,T):- constraint_chosen(P,V,Y), why_not(Y,T), literal_tuple(V,-Q), assignment(W,Q), not answer(W).
 
 reason(Y,W,P,constraint,T):- problem_atom(Y,W,P,V,T), why_not(Y,_).
-reason(Y,W,P,constraint_neg,T):- problem_atom_neg(Y,W,P,V,T).
+reason(Y,W,P,constraint_neg,T):- problem_atom_neg(Y,W,P,V,T), , why_not(X,_).
