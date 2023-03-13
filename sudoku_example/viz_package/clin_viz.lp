@@ -23,7 +23,7 @@ viz_node((pos(X,Y),Z), Z):- pos(X,Y), chosen_has_to(Z,T,_).
 
 viz_attr(node,(pos(X,Y),Z), pos, @pos(X,Y)):- pos(X,Y),  chosen_has_to(Z,T,_).
 
-
+why(A,B,C):- why(sudoku(A,B,C)).
 
 
 viz_edge(((pos(X,Y), Z),(pos(X+1,Y), Z)),Z):- pos(X,Y), pos(X+1,Y), subgrid(X,Y,S), subgrid(X+1,Y,S), chosen_has_to(Z,T,_).
@@ -83,10 +83,9 @@ explain(sudoku(X',Y',V'),derived(X'',Y'',V''),0)}.
 
 
 
-
-viz_attr(node, (pos(X,Y),sudoku(X,Y,Z)), label, Z):- why(X,Y,Z), chosen_has_to(sudoku(X,Y,Z),0,_).
-viz_attr(node, (pos(X,Y),sudoku(X,Y,Z)), fontcolor, darkgreen):- why(X,Y,Z), chosen_has_to(sudoku(X,Y,Z),0,_).
-viz_attr(node, (pos(X,Y),sudoku(X,Y,Z)), fontsize, "55pt"):- why(X,Y,Z), chosen_has_to(sudoku(X,Y,Z),0,_).
+viz_attr(node, (pos(X,Y),sudoku(X,Y,Z)), label, Z):- chosen_has_to(sudoku(X,Y,Z),0,_).
+viz_attr(node, (pos(X,Y),sudoku(X,Y,Z)), fontcolor, darkgreen):- chosen_has_to(sudoku(X,Y,Z),0,_).
+viz_attr(node, (pos(X,Y),sudoku(X,Y,Z)), fontsize, "55pt"):- chosen_has_to(sudoku(X,Y,Z),0,_).
 
 
 
@@ -98,15 +97,14 @@ explain(sudoku(X',Y',V'),initial(X'',Y'',V''),0), initial_unsat(initial(X'',Y'',
 
 
 %Why cell is green
-viz_attr(node, (pos(X,Y),sudoku(X,Y,Z)), fillcolor, darkolivegreen1):- why(X,Y,Z), chosen_has_to(sudoku(X,Y,Z),0,_).
-
+viz_attr(node, (pos(X,Y), sudoku(X,Y,Z)), fillcolor, darkolivegreen1):- chosen_has_to(sudoku(X,Y,Z),0,_).
 
 %The checkered pattern in grey
 
 
 viz_attr(node, (pos(X',Y'),sudoku(X,Y,Z)), fillcolor, "grey88"):- chosen_has_to(sudoku(X,Y,Z),0,_), pos(X',Y'), subgrid(X',Y',S), S\2==0, 
-not why(X',Y',_), not explain(sudoku(_,_,_),sudoku(X',Y',_),0), not explain(sudoku(_,_,_),initial(X',Y',_),0),
-not explain(sudoku(_,_,_),derived(X',Y',_),0), not explain(sudoku(X',Y',_),_,0).
+not why(sudoku(X',Y',_)), not explain(sudoku(_,_,_),sudoku(X',Y',_),0), not explain(sudoku(_,_,_),initial(X',Y',_),0),
+not explain(sudoku(_,_,_),derived(X',Y',_),0), not explain(sudoku(X',Y',_),_,0), (X,Y)!=(X',Y').
 
 
 {viz_attr(node, (pos(A,B),Q), fillcolor, Z): colors(Z)}=1:- explain(_,sudoku(A,B,_),0), chosen_has_to(Q,0,_).
@@ -150,7 +148,7 @@ time(0..5).
 viz_attr(node, (pos(X,Y), Q), label, " "):- pos(X,Y), not initial_unsat(initial(X,Y,_)), 
 not why(X,Y,_), not derived(X,Y,_,_), chosen_has_to(Q,T,_), T>0.
 
-viz_attr(node, (pos(X,Y), sudoku(X',Y',Z)), label, " "):- chosen_has_to(sudoku(X,Y,_),T,_), chosen_has_to(sudoku(X',Y',Z),T,_), (X,Y)!=(X',Y').
+viz_attr(node, (pos(X,Y), sudoku(X',Y',Z)), label, " "):- chosen_has_to(sudoku(X,Y,_),T,_), chosen_has_to(sudoku(X',Y',Z),T,_), (X,Y)!=(X',Y'), not derived(X',Y',_,_).
 
 viz_attr(node, (pos(X'',Y''),sudoku(X,Y,V)), label, " "):- chosen_has_to(sudoku(X,Y,V),T,_), why_not_derived(sudoku(X,Y,V), _,T),
 not explain(_,sudoku(X'',Y'',_),T), not explain(_,initial(X'',Y'',_),T), not explain(_,derived(X'',Y'',_),T),
@@ -164,7 +162,7 @@ chosen_has_to(X',T,_), X!=X', not viz_attr(node, (pos(D,E),X'), (label,1), F).
 % Cells that are not used in an explanation in time T are blank
 viz_attr(node, (pos(X'',Y''),sudoku(X,Y,V)), label, " "):- chosen_has_to(sudoku(X,Y,V),T,_), why_not_derived(sudoku(X,Y,V), _,T),
 not explain(_,sudoku(X'',Y'',_),T), not explain(_,initial(X'',Y'',_),T), not explain(_,derived(X'',Y'',_),T),
-pos(X'',Y''), not why(X'',Y'',_), T>0, not derived(X'',Y'',_,T).
+pos(X'',Y''), not why(X'',Y'',_), T>0, not derived(X'',Y'',_,T), not initial_unsat(initial(X'',Y'',_)).
 
 
 viz_attr(node, (pos(X,Y), W), label, " "):- chosen_has_to(Q,T,_), why_not_derived(Q,Q',T), explain(Q', initial(X,Y,Z),T), 
@@ -210,12 +208,14 @@ viz_attr(node, (pos(X,Y),Q), (label,2), "</B>>"):- T>0, derived(X,Y,Z,T'), T'<T,
 
 
 
-
 % Cells that eliminate themselves are plum
 
 
 %Why cell is green
 viz_attr(node, (pos(X,Y), sudoku(X,Y,Z)), fillcolor, darkolivegreen1):- chosen_has_to(sudoku(X,Y,Z),T,_), not why(X,Y,Z), T>0.
+
+
+
 
 
 viz_attr(node, (pos(X'',Y''),sudoku(X,Y,V)), fillcolor, "plum"):- chosen_has_to(sudoku(X,Y,V),T,P), why_not_derived(sudoku(X,Y,V),sudoku(X',Y',V'),T), 
@@ -246,10 +246,10 @@ why_not_derived(X,sudoku(A',B',C'),T), explain(sudoku(A',B',C'),Z,T),
 not viz_attr(node, (pos(A',B'),X), fillcolor, Z), Z!= "grey88".
 
 
-:- chosen_has_to(X,T,V), V!= cell, why_not_derived(X,Z,T), explain(Z, sudoku(A,B,C),T), T>0,
-chosen_has_to(X,T,V), why_not_derived(X,Z',T), explain(Z', sudoku(A',B',C'),T), Z!=Z',
-(A,B,C)!=(A',B',C'), viz_attr(node, (pos(A,B),X), fillcolor, W), 
-viz_attr(node, (pos(A',B'),X), fillcolor, W), W!= "grey88".
+%:- chosen_has_to(X,T,V), V!= cell, why_not_derived(X,Z,T), explain(Z, sudoku(A,B,C),T), T>0,
+%why_not_derived(X,Z',T), explain(Z', sudoku(A',B',C'),T), Z!=Z',
+%(A,B,C)!=(A',B',C'), viz_attr(node, (pos(A,B),X), fillcolor, W), 
+%viz_attr(node, (pos(A',B'),X), fillcolor, W), W!= "grey88".
 
 
 cannot_be_grey(A,B,sudoku(A,B,C),T):- chosen_has_to(sudoku(A,B,C),T,V), T>0.
@@ -267,10 +267,11 @@ explain(sudoku(A,B,C),initial(D,E,F),T).
 cannot_be_grey(D,E,Q,T):- chosen_has_to(Q,T,V), T>0, why_not_derived(Q,sudoku(A,B,C),T),
 explain(sudoku(A,B,C),derived(D,E,F),T).
 
-viz_attr(node, (pos(X,Y),Q), fillcolor, "grey88"):- subgrid(X,Y,S), S\2==0, not cannot_be_grey(X,Y,Q,T), 
-T>0, chosen_has_to(Q,T,V).
+viz_attr(node, (pos(X,Y),Q), fillcolor, "grey88"):- subgrid(X,Y,S), S\2==0, 
+not cannot_be_grey(X,Y,Q,T), T>0, chosen_has_to(Q,T,V).
 
-viz_attr(node, (pos(X,Y), Q), fillcolor, red):- chosen_has_to(Q,T,cell), why_not_derived(Q,W,T), explain(W,sudoku(X,Y,Z),T).
+viz_attr(node, (pos(X,Y), Q), fillcolor, red):- chosen_has_to(Q,T,cell), 
+why_not_derived(Q,W,T), explain(W,sudoku(X,Y,Z),T).
 
 
 
