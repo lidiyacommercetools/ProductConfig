@@ -22,18 +22,10 @@ explain(sudoku(A,B,C),initial(A,B,D),0):- why_not(sudoku(A,B,C)), initial_unsat(
 
 % A cell is explained if it is in a constraint with a member of the unsat core.
 
-assignment(X,Y):- output(X,Q), literal_tuple(Q,Y).
+explain(sudoku(A,B,C), sudoku(A',B,C),0):- why_not(sudoku(A,B,C)), initial_unsat(initial(A',B,C)), A!=A'.
+explain(sudoku(A,B,C), sudoku(A,B',C),0):- why_not(sudoku(A,B,C)), initial_unsat(initial(A,B',C)), B!=B'.
+explain(sudoku(A,B,C), sudoku(A',B',C),0):- why_not(sudoku(A,B,C)), initial_unsat(initial(A',B',C)), (A,B)!=(A',B'), subgrid(A,B,N), subgrid(A',B',N).
 
-constraint(P,V):- rule(disjunction(P),normal(V)), not atom_tuple(P,_), literal_tuple(V,Z), 
-literal_tuple(Q,Z), output(_,Q).
-
-{constraint(P,V,Y)}:- constraint(P,V), literal_tuple(V,Z), assignment(Y,Z).
-
-explain(sudoku(A,B,C), sudoku(D,E,F),0):- why_not(sudoku(A,B,C)), initial_unsat(initial(D,E,F)), 
-constraint(P,V,sudoku(A,B,C)),  constraint(P,V,sudoku(D,E,F)), not explain(sudoku(A,B,C),initial(A,B,_),0).
-
-explain(sudoku(A,B,C), derived(D,E,F),0):- why_not(sudoku(A,B,C)), derived(D,E,F,_), 
-constraint(P,V,sudoku(A,B,C)),  constraint(P,V,sudoku(D,E,F)), not explain(sudoku(A,B,C),initial(A,B,_),0).
 
 
 
@@ -62,7 +54,7 @@ subgrid(X',Y',Z), (X',Y')!= (X,Y), time(T), T!=0.
 cannot(sudoku(X,Y,N'), derived(X,Y,N),T):- derived(X,Y,N,T'), N!=N', val(N'), time(T), T'<T.
 cannot(sudoku(X',Y,N), derived(X,Y,N),T):- derived(X,Y,N,T'), val(X'), X!=X', time(T), T'<T.
 cannot(sudoku(X,Y',N), derived(X,Y,N),T):- derived(X,Y,N,T'), val(Y'), Y!=Y', time(T), T'<T.
-cannot(sudoku(X',Y',N), derived(X,Y,N),T):- derived(X,Y,N,T'), subgrid(X,Y,Z), 
+cannot(sudoku(X',Y',N), derived(X,Y,N),T):- derived(X,Y,N,T'), subgrid(X,Y,Z),
 subgrid(X',Y',Z), (X',Y')!= (X,Y), time(T), T'<T.
 
 
@@ -92,11 +84,10 @@ has_to(sudoku(A,B,C),T,cell):- count_cell(A,B,1,T), possible(A,B,C,T), not initi
 
 % A cell has been derived if there is only one possible value it can be, and it is not part of the unsat core or previously derived
 
-derived(X,Y,Z,T+1):- has_to(sudoku(X,Y,Z),T,_), not initial_unsat(initial(X,Y,Z)), 
-not stop(T'), time(T'), T'<(T+1).
+derived(X,Y,Z,T+1):- has_to(sudoku(X,Y,Z),T,_), not initial_unsat(initial(X,Y,Z)), not already_derived(X,Y,Z,T), not why(sudoku(X,Y,Z)).
 
-stop(T) :- why(sudoku(A,B,C)), derived(A,B,C,T).
-
+already_derived(X,Y,Z,T):- derived(X,Y,Z,T).
+already_derived(X,Y,Z,T+1):- already_derived(X,Y,Z,T), time(T).
 
 % Given that a cell has been derived, provide an explanation as to why
 why_derived(sudoku(X,Y,Z),T):- derived(X,Y,Z,T).
@@ -126,14 +117,11 @@ explain(sudoku(A,B,C), initial(A,B,D),T):- why_not_derived(_,sudoku(A,B,C),T), i
 explain(sudoku(A,B,C),sudoku(A,B,C'),T):- why_not_derived(_,sudoku(A,B,C),T), derived(A,B,C',T'), T'<T, T'!=0.
 
 
+{explain(sudoku(A,B,C), sudoku(A',B,C),T)}:- why_not_derived(sudoku(X,Y,Z),sudoku(A,B,C),T), initial_unsat(initial(A',B,C)), A!=A'.
+{explain(sudoku(A,B,C), sudoku(A,B',C),T)}:- why_not_derived(sudoku(X,Y,Z),sudoku(A,B,C),T), initial_unsat(initial(A,B',C)), B!=B'.
+{explain(sudoku(A,B,C), sudoku(A',B',C),T)}:- why_not_derived(sudoku(X,Y,Z),sudoku(A,B,C),T), initial_unsat(initial(A',B',C)), (A,B)!=(A',B'), subgrid(A,B,N), subgrid(A',B',N).
 
-explain(sudoku(A,B,C),sudoku(D,E,F),T):- constraint_derived(P,V,sudoku(A,B,C),sudoku(D,E,F),T), initial_unsat(initial(D,E,F)), 
-not explain(sudoku(A,B,C), initial(D,E,F),T).
-
-explain(sudoku(A,B,C),sudoku(D,E,F),T):- constraint_derived(P,V,sudoku(A,B,C),sudoku(D,E,F),T), derived(D,E,F,T'), T'<T, T'!=0.
-
-
-:- why_not_derived(_,X,T), not explain(X,_,T), T!=0.
+:- why_not_derived(_,X,T), not explain(X,_,T), T>0, time(T).
 :- explain(X,Y,T), explain(X,Y',T), Y!=Y'.
 :- why_not(sudoku(A,B,C)), not explain(sudoku(A,B,C),_,0).
 
@@ -142,3 +130,5 @@ explain(sudoku(A,B,C),sudoku(D,E,F),T):- constraint_derived(P,V,sudoku(A,B,C),su
 
 #show explain/3.
 #show derived/4.
+#show why_not_derived/3.
+#show chosen_has_to/3.
